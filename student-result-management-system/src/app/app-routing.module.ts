@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { RegisterformComponent } from './Components/registerform/registerform.component';
 import { HomeComponent } from './home/home.component';
 import { ObjectionsComponent } from './objections/objections.component';
 import { ResultsComponent } from './results/results.component';
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path: 'upload', component: UploadComponent},
   {path: 'view-update', component: ViewUpdateComponent},
   {path: 'objections', component: ObjectionsComponent},
-  {path: 'results', component:ResultsComponent}
+  {path: 'results', component:ResultsComponent},
+  {path: 'register', component:RegisterformComponent}
 ];
 
 @NgModule({
