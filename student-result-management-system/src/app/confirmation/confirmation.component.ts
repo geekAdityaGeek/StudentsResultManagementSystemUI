@@ -1,35 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RowOperation } from 'src/enums/rowOperation';
 import { MarksVO } from 'src/vo/marksVO';
 
 @Component({
-  selector: 'results',
-  templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css']
+  selector: 'app-confirmation',
+  templateUrl: './confirmation.component.html',
+  styleUrls: ['./confirmation.component.css']
 })
-export class ResultsComponent implements OnInit {
+export class ConfirmationComponent implements OnInit {
 
-  columnHeading:string[] = ["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE"]
+  resultData:MarksVO[];
+  arrayResultData:string[][];
+  columnHeading:string[] = ["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "OPERATION"]
   colWidth:string[] = ["15%","30%","10%","10%","10%", "10%", "10%"]
-  resultData:MarksVO[]
-  arrayResultData : string[][];
   backBtnLabel:string = "Back"
-  backUrl:string = "view-update"
+  backUrl:string = "results"
   submitBtnLabel:string = "Submit"
   userConf:string = "user-conf"
-  otherPageResult:string = "results"
-  prevPageBtnLabel:string = "Previous"
-  nextPageBtnLabel:string = "Next"
-  operationList:RowOperation[] = [];
 
+  opSuccess:boolean = null
+  failureMessage:string = "failed" 
+  
 
   constructor(private router:Router, private activatedRoute:ActivatedRoute) { 
     this.resultData = <MarksVO[]>this.router.getCurrentNavigation().extras.state
     if(this.resultData == undefined)  
       this.router.navigateByUrl('home')
     this.convertToResultArray()
-    this.allowedOperation()
   }
 
   convertToResultArray(){
@@ -42,19 +39,12 @@ export class ResultsComponent implements OnInit {
       this.arrayResultData[i].push(this.resultData[i].term.toString())
       this.arrayResultData[i].push(this.resultData[i].marksObtained.toString())
       this.arrayResultData[i].push(this.resultData[i].totalMarks.toString())
-      this.arrayResultData[i].push(this.resultData[i].grade)      
+      this.arrayResultData[i].push(this.resultData[i].grade) 
+      this.arrayResultData[i].push(this.resultData[i].state)  
     }
   }
 
-  ngOnInit() { }
-
-  allowedOperation(){
-    this.operationList.push(RowOperation.UPDATE);
-    this.operationList.push(RowOperation.DELETE);
-  }
-
-  updateData(updatedData:any){
-    console.log(updatedData)
+  ngOnInit() {
   }
 
 }

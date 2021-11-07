@@ -19,7 +19,8 @@ import { CustomSubmitButtonComponent } from './Components/Buttons/custom-submit-
 import { ResultsComponent } from './results/results.component';
 import { PageTransitButtonComponent } from './Components/Buttons/page-transit-button/page-transit-button.component';
 import { TableComponent } from './Components/Table/custom-table/table.component';
-import { RowComponent } from './Components/Table/custom-row/row.component';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import { RowComponent } from './Components/Table/custom-row/row.component';
     ResultsComponent,
     PageTransitButtonComponent,
     TableComponent,
-    RowComponent,
+    ConfirmationComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +46,7 @@ import { RowComponent } from './Components/Table/custom-row/row.component';
     MatCardModule,
     MatButtonModule,
     MatMenuModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

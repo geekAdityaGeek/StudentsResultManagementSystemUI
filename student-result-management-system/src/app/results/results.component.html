@@ -3,7 +3,14 @@
         <h5 class="card-title">Results</h5>
         <hr />
         
-        <custom-table [data]="arrayResultData" [colTitle]="columnHeading"></custom-table>
+        <custom-submit-button [btnLabel]="prevPageBtnLabel" [componentUrl]="otherPageResult"></custom-submit-button>
+        <custom-submit-button [btnLabel]="nextPageBtnLabel" [componentUrl]="otherPageResult"></custom-submit-button>
+        <a class="btn btn-success" href="https://www.google.com/" target="_blank">Download</a>
+        <custom-table [data]="arrayResultData" 
+        [colTitle]="columnHeading"
+        [colWidth]="colWidth"
+        [operationAllowed]="operationList"
+        (changedDataEvent)="updateData($event)"></custom-table>
 
         <page-transit-button [btnLabel]="backBtnLabel" [componentUrl]="backUrl"></page-transit-button>
         <custom-submit-button [btnLabel]="submitBtnLabel" [componentUrl]="userConf"></custom-submit-button>
