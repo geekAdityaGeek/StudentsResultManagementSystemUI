@@ -19,7 +19,6 @@ import { CustomSubmitButtonComponent } from './Components/Buttons/custom-submit-
 import { ResultsComponent } from './results/results.component';
 import { PageTransitButtonComponent } from './Components/Buttons/page-transit-button/page-transit-button.component';
 import { TableComponent } from './Components/Table/custom-table/table.component';
-import { RowComponent } from './Components/Table/custom-row/row.component';
 import { RegisterformComponent } from './Components/registerform/registerform.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -42,7 +41,6 @@ import { FormsModule } from '@angular/forms';
     ResultsComponent,
     PageTransitButtonComponent,
     TableComponent,
-    RowComponent,
     RegisterformComponent,
     ConfirmationComponent,
   ],
@@ -56,7 +54,7 @@ import { FormsModule } from '@angular/forms';
     NgbModule,
     MatDialogModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
     FormsModule
   ],
   providers: [],
