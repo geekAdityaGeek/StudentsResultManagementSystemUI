@@ -23,6 +23,9 @@ import { RowComponent } from './Components/Table/custom-row/row.component';
 import { RegisterformComponent } from './Components/registerform/registerform.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { FormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -41,6 +44,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TableComponent,
     RowComponent,
     RegisterformComponent,
+    ConfirmationComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +57,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatDialogModule,
     ReactiveFormsModule,
     HttpClientModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
