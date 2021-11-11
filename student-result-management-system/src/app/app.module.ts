@@ -19,11 +19,17 @@ import { CustomSubmitButtonComponent } from './Components/Buttons/custom-submit-
 import { ResultsComponent } from './results/results.component';
 import { PageTransitButtonComponent } from './Components/Buttons/page-transit-button/page-transit-button.component';
 import { TableComponent } from './Components/Table/custom-table/table.component';
-import { RowComponent } from './Components/Table/custom-row/row.component';
 import { RegisterformComponent } from './Components/registerform/registerform.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { ToastrModule } from 'ngx-toastr';
+
+import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { FormsModule } from '@angular/forms';
+
+
+
 
 @NgModule({
   declarations: [
@@ -39,8 +45,8 @@ import { ToastrModule } from 'ngx-toastr';
     ResultsComponent,
     PageTransitButtonComponent,
     TableComponent,
-    RowComponent,
     RegisterformComponent,
+    ConfirmationComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +68,8 @@ import { ToastrModule } from 'ngx-toastr';
       autoDismiss: true,
       newestOnTop: true,
     }), // ToastrModule added
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

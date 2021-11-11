@@ -1,0 +1,19 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">CONFIRMATION</h5>
+        <hr />
+        <div *ngIf="opSuccess; else failAlert" class="alert alert-success" role="alert">
+            Operation Successfull
+        </div>
+        <ng-template #failAlert>
+            <div *ngIf="opSuccess==false" class="alert alert-danger" role="alert">
+                {{failureMessage}}
+            </div>
+        </ng-template>
+        <custom-table [data]="arrayResultData" [colTitle]="columnHeading" [colWidth]="colWidth"></custom-table>
+        <div *ngIf="!opSuccess || opSuccess==null; else successBtn">
+            <custom-submit-button [btnLabel]="backBtnLabel" [componentUrl]="backUrl"></custom-submit-button>
+            <custom-submit-button [btnLabel]="submitBtnLabel" [componentUrl]="userConf"></custom-submit-button>
+        </div>
+    </div>
+</div>

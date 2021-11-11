@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {Router} from "@angular/router"
+import { RowOperation } from 'src/enums/rowOperation';
+import { MarksVO } from 'src/vo/marksVO';
 
 
 @Component({
@@ -18,8 +20,7 @@ export class CustomSubmitButtonComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {  }
 
   fetchData(){
     let data:MarksVO[] = [] ;
@@ -32,7 +33,8 @@ export class CustomSubmitButtonComponent implements OnInit {
         totalMarks : 100,
         grade : "A+",
         term: 1,
-        year: 2018
+        year: 2018,
+        state: RowOperation.UPDATE
       };
       data.push(marksVO);
     }
