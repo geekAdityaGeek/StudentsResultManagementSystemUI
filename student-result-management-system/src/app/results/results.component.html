@@ -13,7 +13,9 @@
         (changedDataEvent)="updateData($event)"></custom-table>
 
         <page-transit-button [btnLabel]="backBtnLabel" [componentUrl]="backUrl"></page-transit-button>
-        <custom-submit-button [btnLabel]="submitBtnLabel" [componentUrl]="userConf"></custom-submit-button>
+        <custom-submit-button [btnLabel]="submitBtnLabel" 
+        [componentUrl]="userConf"
+        [requestData]="dataExtractor()"></custom-submit-button>
 
     </div>
 </div>

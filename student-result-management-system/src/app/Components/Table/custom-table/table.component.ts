@@ -78,6 +78,7 @@ export class TableComponent implements OnInit {
       this.fillModifiedData(rowNo)
       this.modifiedData[rowNo][len-1] = this.rowStatus[rowNo]
     }
+    this.onChange()
   }
 
   isAllowed(btnIdx: number){
@@ -109,7 +110,7 @@ export class TableComponent implements OnInit {
     return null;
   }
 
-  onChange(data:any, rowNo:number){
+  onChange(){
     this.changedDataEvent.emit(this.modifiedData)
   }
 

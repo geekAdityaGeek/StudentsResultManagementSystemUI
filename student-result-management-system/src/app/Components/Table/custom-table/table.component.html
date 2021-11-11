@@ -16,7 +16,7 @@
                 <td [style.width]="getColWidth(colNo)" 
                 *ngFor="let cellData of rowData; let colNo = index">
                 <input class="form-control"  type="text" 
-                [(ngModel)]="modifiedData[rowNo][colNo]" (ngModelChange)="onChange($event, rowNo)">                
+                [(ngModel)]="modifiedData[rowNo][colNo]" (ngModelChange)="onChange()">                
                 </td>
             </ng-template>
 

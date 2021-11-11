@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MarksVO } from 'src/vo/marksVO';
 
 @Component({
-  selector: 'app-confirmation',
+  selector: 'confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.css']
 })
@@ -13,8 +13,8 @@ export class ConfirmationComponent implements OnInit {
   arrayResultData:string[][];
   columnHeading:string[] = ["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "OPERATION"]
   colWidth:string[] = ["15%","30%","10%","10%","10%", "10%", "10%"]
-  backBtnLabel:string = "Back"
-  backUrl:string = "results"
+  backBtnLabel:string = "Cancel"
+  backUrl:string = "home"
   submitBtnLabel:string = "Submit"
   userConf:string = "user-conf"
 
@@ -33,14 +33,15 @@ export class ConfirmationComponent implements OnInit {
     this.arrayResultData = [];
     for(let i=0;i<this.resultData.length;i++){
       this.arrayResultData.push([]);
-      this.arrayResultData[i].push(this.resultData[i].rollNumber)
-      this.arrayResultData[i].push(this.resultData[i].subjectCode+":"+this.resultData[i].subjectName)
-      this.arrayResultData[i].push(this.resultData[i].year.toString())
-      this.arrayResultData[i].push(this.resultData[i].term.toString())
-      this.arrayResultData[i].push(this.resultData[i].marksObtained.toString())
-      this.arrayResultData[i].push(this.resultData[i].totalMarks.toString())
-      this.arrayResultData[i].push(this.resultData[i].grade) 
-      this.arrayResultData[i].push(this.resultData[i].state)  
+      this.arrayResultData[i].push(this.resultData[i].getRollNumber())
+      this.arrayResultData[i].push(this.resultData[i].getSubjectCode()
+                  +":"+this.resultData[i].getSubjectName())
+      this.arrayResultData[i].push(this.resultData[i].getYear().toString())
+      this.arrayResultData[i].push(this.resultData[i].getTerm().toString())
+      this.arrayResultData[i].push(this.resultData[i].getMarksObtained().toString())
+      this.arrayResultData[i].push(this.resultData[i].getTotalMarks().toString())
+      this.arrayResultData[i].push(this.resultData[i].getGrade()) 
+      this.arrayResultData[i].push(this.resultData[i].getState())  
     }
   }
 
