@@ -1,1 +1,163 @@
-<p>upload works!</p>
+<div class="card">
+  <div class="card-body">
+    <div class="card-title" style="color: blue"><b>SINGLE UPLOAD</b></div>
+    <hr />
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="roll" style="color: rgb(0, 110, 255); margin-top: 5%"
+                >ROLL NUMBER</label
+              >
+            </div>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                id="rollNo"
+                formControlName="rollNo"
+                class="form-control"
+                size="4"
+              />
+              <span
+                class="help-block"
+                *ngIf="
+                  uploadForm.get('rollNo').invalid &&
+                  uploadForm.get('rollNo').touched
+                "
+                >*Roll Number is required in correct Format</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="row">
+            <div class="col-sm-1">
+              <label for="term" style="color: rgb(0, 110, 255); margin-top: 20%"
+                >TERM</label
+              >
+            </div>
+            <div class="col-sm-11">
+              <select class="form-control" id="term" formControlName="term">
+                <option>Select Term</option>
+                <option *ngFor="let item of Terms">{{ item }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+          <div class="row">
+            <div class="col-sm-3">
+              <label
+                for="subjCode"
+                style="color: rgb(0, 110, 255); margin-top: 5%"
+                >SUBJECT CODE</label
+              >
+            </div>
+            <div class="col-sm-9">
+              <select
+                class="form-control"
+                id="subjCode"
+                formControlName="subjectCode"
+              >
+                <option>Select Subject Code</option>
+                <option *ngFor="let item of SubjectCodes">{{ item }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="row">
+            <div class="col-sm-1">
+              <label for="year" style="color: rgb(0, 110, 255); margin-top: 20%"
+                >YEAR</label
+              >
+            </div>
+            <div class="col-sm-11">
+              <select class="form-control" id="year" formControlName="year">
+                <option>Select Year</option>
+                <option *ngFor="let item of Years">{{ item }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+          <div class="row">
+            <div class="col-sm-3">
+              <label
+                for="marksObt"
+                style="color: rgb(0, 110, 255); margin-top: 5%"
+                >MARKS OBTAINED</label
+              >
+            </div>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                id="marksObtained"
+                formControlName="marksObtained"
+                class="form-control"
+                size="4"
+              />
+              <span
+                class="help-block"
+                *ngIf="
+                  uploadForm.get('marksObtained').invalid &&
+                  uploadForm.get('marksObtained').touched
+                "
+                >*Marks should of length 3</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="row">
+            <div class="col-sm-3">
+              <label
+                for="totMarks"
+                style="color: rgb(0, 110, 255); margin-top: 5%"
+                >TOTAL MARKS</label
+              >
+            </div>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                id="totMarks"
+                formControlName="totMarks"
+                class="form-control"
+                size="4"
+                (ngModelChange)="verifyMarks()"
+              />
+              <span
+                class="help-block"
+                *ngIf="
+                  uploadForm.get('totMarks').invalid &&
+                  uploadForm.get('totMarks').touched
+                "
+                >*Marks should of length 3</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-left: 50%">
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!uploadForm.valid || marksFlag"
+        >
+          Upload
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 5%;">
+  <div class="card-body">
+    <div class="card-title" style="color: blue"><b>BULK UPLOAD</b></div>
+  </div>
+</div>
