@@ -5,8 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { MatCardModule } from '@angular/material/card'
-import { MatButtonModule} from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatMenuModule } from '@angular/material';
 import { CustomNavbarComponent } from './Components/custom-navbar/custom-navbar.component';
 import { CustomNavButtonComponent } from './Components/Buttons/custom-nav-button/custom-nav-button.component';
@@ -23,7 +23,7 @@ import { RowComponent } from './Components/Table/custom-row/row.component';
 import { RegisterformComponent } from './Components/registerform/registerform.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -52,9 +52,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     MatDialogModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      closeButton: true,
+      maxOpened: 3,
+      autoDismiss: true,
+      newestOnTop: true,
+    }), // ToastrModule added
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

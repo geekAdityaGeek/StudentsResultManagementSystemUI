@@ -9,6 +9,8 @@ import {
   NgbDatepickerConfig,
 } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { HttpErrorResponse } from "@angular/common/http";
 @Component({
   selector: "app-registerform",
   templateUrl: "./registerform.component.html",
@@ -16,6 +18,7 @@ import { Router } from "@angular/router";
 })
 export class RegisterformComponent implements OnInit {
   registerform: FormGroup;
+  Roles = [];
   userDetails: userDetailsVO;
   parserformatter: NgbDateParserFormatter;
   match(control: FormControl) {
@@ -26,7 +29,9 @@ export class RegisterformComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private config: NgbDatepickerConfig,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService,
+    private parserFormatter: NgbDateParserFormatter
   ) {
     let date = new Date();
     config.maxDate = {
@@ -38,6 +43,16 @@ export class RegisterformComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.toastrService.success("Registration Form loaded!");
+    this.authenticationService.fetchRoles().subscribe(
+      (data: any) => {
+        for (var i = 0; i < data.length; i++) this.Roles.push(data[i]);
+        this.toastrService.success("Roles fetched successfully!");
+      },
+      (error: HttpErrorResponse) => {
+        this.toastrService.error(error.error);
+      }
+    );
     this.registerform = new FormGroup(
       {
         firstname: new FormControl("", Validators.required),
@@ -47,14 +62,18 @@ export class RegisterformComponent implements OnInit {
           Validators.required,
           Validators.pattern(new RegExp("^[0-9]{10}$")),
         ]),
-        role: new FormControl("", Validators.required),
+        role: new FormControl(this.Roles[0], Validators.required),
         id: new FormControl("", [
           Validators.required,
-          Validators.pattern(new RegExp("[A-Z]{3}[0-9]{8}")),
+          Validators.pattern(new RegExp("(IMT|MT|PH|DT|MOD)[0-9]{7}")),
         ]),
         address: new FormControl("", Validators.required),
         dob: new FormControl("", Validators.required),
-        email: new FormControl("", [Validators.required, Validators.email]),
+        email: new FormControl("", [
+          Validators.required,
+          Validators.email,
+          Validators.pattern(new RegExp("^.+@iiitb.org$")),
+        ]),
         password: new FormControl("", [
           Validators.required,
           Validators.pattern(
@@ -73,15 +92,18 @@ export class RegisterformComponent implements OnInit {
     this.router.navigateByUrl("/home");
   };
   onSubmit() {
+    const name: string =
+      this.registerform.get("firstname").value +
+      " " +
+      this.registerform.get("lastname").value;
     this.userDetails = new userDetailsVO(
-      this.registerform.get("firstname").value,
-      this.registerform.get("lastname").value,
+      name,
       this.registerform.get("gender").value,
       this.registerform.get("contactno").value,
       this.registerform.get("role").value,
       this.registerform.get("id").value,
       this.registerform.get("address").value,
-      this.registerform.get("dob").value,
+      this.parserFormatter.format(this.registerform.controls["dob"].value),
       this.registerform.get("email").value,
       this.registerform.get("password").value
     );
@@ -89,9 +111,15 @@ export class RegisterformComponent implements OnInit {
     this.authenticationService.registerUser(this.userDetails).subscribe(
       (data: any) => {
         console.log(data);
+        this.toastrService.success("Registration Successful!");
+        this.registerform.reset();
       },
-      (error: any) => {
-        console.error();
+      (error: HttpErrorResponse) => {
+        console.log(error);
+        this.toastrService.error(
+          error.error.message,
+          "Registration Unsuccessful!"
+        );
       }
     );
   }

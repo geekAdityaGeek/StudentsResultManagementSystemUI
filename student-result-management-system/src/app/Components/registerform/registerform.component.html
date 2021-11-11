@@ -72,8 +72,7 @@
     <div class="form-group">
       <label for="role">Role</label>
       <select class="form-control" id="role" formControlName="role">
-        <option>Student</option>
-        <option>Moderator</option>
+        <option *ngFor="let Role of Roles" [value]="Role">{{ Role }}</option>
       </select>
       <span
         class="help-block"
@@ -89,7 +88,7 @@
         type="text"
         id="id"
         class="form-control"
-        placeholder="xxx-xxxx-xxxx"
+        placeholder="(x)xx-xxxx-xxx"
         formControlName="id"
         maxlength="11"
       />
@@ -148,7 +147,12 @@
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input id="email" class="form-control" formControlName="email" />
+      <input
+        id="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="use @iiitb.org email"
+      />
       <span
         class="help-block"
         *ngIf="
