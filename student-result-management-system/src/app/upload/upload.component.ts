@@ -109,6 +109,7 @@ export class UploadComponent implements OnInit {
       this.uploadService.uploadMarks(uploadObj).subscribe(
         (data: any) => {
           this.toastrService.success(data["message"], "Success");
+          this.uploadForm.reset();
         },
         (error: HttpErrorResponse) => {
           this.toastrService.error(error.error.message, "Failed");
