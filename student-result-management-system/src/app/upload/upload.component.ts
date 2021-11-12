@@ -18,10 +18,12 @@ import { UploadService } from "./../services/upload.service";
 })
 export class UploadComponent implements OnInit {
   uploadForm: FormGroup;
+  bulkUploadForm: FormGroup;
   Terms: string[] = [];
   SubjectCodes: string[] = [];
   Years: string[] = [];
   marksFlag: boolean = true;
+  file: File;
 
   constructor(
     private toastrService: ToastrService,
@@ -31,7 +33,7 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
     let uploadFormClass = new UploadForm();
     this.uploadForm = uploadFormClass.getUploadForm();
-    console.log(this.uploadForm);
+    this.bulkUploadForm = uploadFormClass.getBulkUUploadForm();
     this.fetchTerms();
     this.fetchSubjectCodes();
     this.fetchYears();
@@ -57,7 +59,9 @@ export class UploadComponent implements OnInit {
           "Success"
         );
       },
-      (error) => {}
+      (error) => {
+        this.toastrService.error("Subject Codes Fetching Failed", "Failed");
+      }
     );
   }
 
@@ -69,7 +73,9 @@ export class UploadComponent implements OnInit {
         }
         this.toastrService.success("Terms Fetched Successful", "Success");
       },
-      (error) => {}
+      (error) => {
+        this.toastrService.error("Terms Fetching Failed", "Failed");
+      }
     );
   }
 
@@ -95,24 +101,51 @@ export class UploadComponent implements OnInit {
       this.uploadService.uploadMarks(uploadObj).subscribe(
         (data: any) => {
           this.toastrService.success(
-            "Bulk Upload of Marks Successful",
+            "Single Upload of Marks Successful",
             "Success"
           );
         },
         (error) => {}
       );
     } else {
-      throw new Error("Marks Obtained Should be less then Total Marks");
+      this.toastrService.error(
+        "Single Upload of Marks Failed. Please check the file.",
+        "Failed"
+      );
     }
   }
 
   verifyMarks() {
     let marksObt = Number(this.uploadForm.get("marksObtained").value);
     let totMarks = Number(this.uploadForm.get("totMarks").value);
-    if (marksObt <= totMarks) {
+    if (
+      marksObt != undefined &&
+      totMarks != undefined &&
+      marksObt <= totMarks
+    ) {
       this.marksFlag = false;
     } else {
       this.marksFlag = true;
     }
+  }
+
+  onSelectFile(event) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0)
+      this.file = event.target.files[0];
+  }
+
+  onBulkSubmit() {
+    this.uploadService.bulkUpload(this.file).subscribe(
+      (data) => {
+        this.toastrService.success(
+          "Bulk Upload of Marks Successful",
+          "Success"
+        );
+      },
+      (error) => {
+        this.toastrService.error("Bulk Uplaod of Marks Failed", "Failed");
+      }
+    );
   }
 }

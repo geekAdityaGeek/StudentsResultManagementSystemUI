@@ -20,8 +20,16 @@ export class UploadForm {
       Validators.maxLength(3),
     ]),
   });
-    
-    public getUploadForm(): FormGroup {
-        return this.uploadForm;
-    }
+
+  public getUploadForm(): FormGroup {
+    return this.uploadForm;
+  }
+
+  bulkUploadForm = new FormGroup({
+    file: new FormControl(null, Validators.required),
+  });
+
+  public getBulkUUploadForm() {
+    return this.bulkUploadForm;
+  }
 }

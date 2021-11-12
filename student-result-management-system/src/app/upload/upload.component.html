@@ -156,8 +156,51 @@
   </div>
 </div>
 
-<div class="card" style="margin-top: 5%;">
+<div class="card" style="margin-top: 5%">
   <div class="card-body">
     <div class="card-title" style="color: blue"><b>BULK UPLOAD</b></div>
+    <hr />
+    <form [formGroup]="bulkUploadForm" (ngSubmit)="onBulkSubmit()">
+      <div class="form-row">
+        <div class="form-group col-sm-12">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-3">
+                <label
+                  for="fileUpload"
+                  style="color: rgb(0, 110, 255); margin-top: 2%"
+                  >SELECT FILE FOR BULK UPLOAD</label
+                >
+              </div>
+              <div class="col-sm-9">
+                <input
+                  type="file"
+                  id="fileUpload"
+                  class="form-control"
+                  (change)="onSelectFile($event)"
+                  formControlName="file"
+                />
+                <span
+                  class="help-block"
+                  *ngIf="
+                    bulkUploadForm.get('file').invalid &&
+                    bulkUploadForm.get('file').touched
+                  "
+                  >*File is required</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!bulkUploadForm.valid"
+        id="Apply"
+      >
+        BULK UPLOAD
+      </button>
+    </form>
   </div>
 </div>
