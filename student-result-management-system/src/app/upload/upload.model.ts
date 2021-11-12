@@ -1,14 +1,20 @@
 export class Upload {
   private _rollNo: string;
-  private _term: string;
+  private _term: number;
   private _subjectCode: string;
-  private _year: string;
-  private _marksObt: number;
+  private _subjectName: string;
+  private _year: number;
+  private _marksObtained: number;
   private _totalMarks: number;
-  constructor(private rollNo: string,
-    private term: string,
+  private _grade: string;
+  constructor(
+    private rollNo: string,
+    private term: number,
     private subjectCode: string,
-    private year: string,
-    private marksObt: number,
-    private totalMarks: number,) {}
+    private subjectName: string,
+    private year: number,
+    private marksObtained: number,
+    private totalMarks: number,
+    private grade: string
+  ) {}
 }

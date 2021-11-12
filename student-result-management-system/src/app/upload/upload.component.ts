@@ -10,6 +10,7 @@ import {
 import { Upload } from "./upload.model";
 import { ToastrService } from "ngx-toastr";
 import { UploadService } from "./../services/upload.service";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-upload",
@@ -81,35 +82,41 @@ export class UploadComponent implements OnInit {
 
   onSubmit() {
     let rollNo = this.uploadForm.get("rollNo").value;
-    let term = this.uploadForm.get("term").value;
+    let term = Number(this.uploadForm.get("term").value);
     let subjectCode: string = this.uploadForm
       .get("subjectCode")
       .value.toString()
-      .split("-")[0];
-    let year = this.uploadForm.get("year").value;
+      .split(",")[0];
+    let subjectName: string = this.uploadForm
+      .get("subjectCode")
+      .value.toString()
+      .split(",")[1];
+    let year = Number(this.uploadForm.get("year").value);
     let marksObt = Number(this.uploadForm.get("marksObtained").value);
     let totMarks = Number(this.uploadForm.get("totMarks").value);
+    let grade = this.uploadForm.get("grade").value;
     if (marksObt <= totMarks) {
       let uploadObj = new Upload(
         rollNo,
         term,
         subjectCode,
+        subjectName,
         year,
         marksObt,
-        totMarks
+        totMarks,
+        grade
       );
       this.uploadService.uploadMarks(uploadObj).subscribe(
         (data: any) => {
-          this.toastrService.success(
-            "Single Upload of Marks Successful",
-            "Success"
-          );
+          this.toastrService.success(data["message"], "Success");
         },
-        (error) => {}
+        (error: HttpErrorResponse) => {
+          this.toastrService.error(error.error.message, "Failed");
+        }
       );
     } else {
       this.toastrService.error(
-        "Single Upload of Marks Failed. Please check the file.",
+        "Marks Obtained cannot be gretaer than Total Marks",
         "Failed"
       );
     }
@@ -138,13 +145,11 @@ export class UploadComponent implements OnInit {
   onBulkSubmit() {
     this.uploadService.bulkUpload(this.file).subscribe(
       (data) => {
-        this.toastrService.success(
-          "Bulk Upload of Marks Successful",
-          "Success"
-        );
+        console.log(data);
+        this.toastrService.success(data["message"], "Success");
       },
-      (error) => {
-        this.toastrService.error("Bulk Uplaod of Marks Failed", "Failed");
+      (error: HttpErrorResponse) => {
+        this.toastrService.error(error.error.message, "Failed");
       }
     );
   }

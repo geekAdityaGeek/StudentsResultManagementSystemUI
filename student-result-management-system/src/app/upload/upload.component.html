@@ -143,6 +143,36 @@
           </div>
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+          <div class="row">
+            <div class="col-sm-3">
+              <label
+                for="marksObt"
+                style="color: rgb(0, 110, 255); margin-top: 5%"
+                >GRADE</label
+              >
+            </div>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                id="grade"
+                formControlName="grade"
+                class="form-control"
+                size="4"
+              />
+              <span
+                class="help-block"
+                *ngIf="
+                  uploadForm.get('grade').invalid &&
+                  uploadForm.get('grade').touched
+                "
+                >*Grade should be either A|A-|B+|B|B-|C+|C|C-|D+|D|D-|F</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
       <div style="margin-left: 50%">
         <button
           class="btn btn-primary"
