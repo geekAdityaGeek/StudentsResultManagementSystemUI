@@ -22,25 +22,14 @@ export class CustomSubmitButtonComponent implements OnInit {
 
   ngOnInit() {  }
 
-  fetchData(){ debugger
+  fetchData(){
 
     if(this.requestUrl){
-      /**
-      this.http.get(this.requestUrl, this.requestData).subscribe( response => {
-        console.log(response)      
+      
+      this.http.get(this.requestUrl).subscribe( response => {
+        this.responseData = response;
         this.loadComponent();
-      })
-      **/
-      let data:MarksVO[] = [] ;
-      for(let i=0;i<10;i++){
-        let marksVO = new MarksVO(
-          "MT2020093", "A08", "Advanced Subject", 95, 100, "A+",
-          1, 2018, RowOperation.UPDATE
-        );
-        data.push(marksVO);
-      }
-      this.responseData = data;
-      this.loadComponent();
+      })     
     }else{
       this.responseData = this.requestData
       this.loadComponent();

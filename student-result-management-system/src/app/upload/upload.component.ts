@@ -11,6 +11,7 @@ import { Upload } from "./upload.model";
 import { ToastrService } from "ngx-toastr";
 import { UploadService } from "./../services/upload.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { CommonService } from "../services/common.service";
 
 @Component({
   selector: "app-upload",
@@ -28,7 +29,8 @@ export class UploadComponent implements OnInit {
 
   constructor(
     private toastrService: ToastrService,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
@@ -50,7 +52,7 @@ export class UploadComponent implements OnInit {
   }
 
   fetchSubjectCodes() {
-    this.uploadService.fetchSubjectCodes().subscribe(
+    this.commonService.fetchSubjectCodes().subscribe(
       (data) => {
         for (let i = 0; i < data.length; i++) {
           this.SubjectCodes.push(data[i]);
@@ -67,7 +69,7 @@ export class UploadComponent implements OnInit {
   }
 
   fetchTerms() {
-    this.uploadService.fetchTerms().subscribe(
+    this.commonService.fetchTerms().subscribe(
       (data) => {
         for (let i = 0; i < data.length; i++) {
           this.Terms.push(data[i]);

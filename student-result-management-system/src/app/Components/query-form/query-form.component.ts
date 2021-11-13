@@ -1,5 +1,10 @@
+import { query } from '@angular/animations';
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { CommonService } from 'src/app/services/common.service';
+import { QueryService } from 'src/app/services/query.service';
 import { QueryVO } from 'src/vo/queryVO';
 
 
@@ -21,20 +26,27 @@ export class QueryFormComponent implements OnInit {
 
 
   submitButtonLabel: string = "Submit"
-  submitRequestUrl: string = "/sample"
+  submitRequestUrl: string = "/getMarks"
   submitButtonNextPageUrl: string="/results"
   viewQuery: QueryVO;
   queryForm: FormGroup;
+  subjectCodes: string[] = []
   
-  constructor() { }
+  constructor(private commonService: CommonService,
+    private toastrService: ToastrService,
+    private queryService: QueryService
+    ) { }
 
   ngOnInit() {
     this.queryForm = new FormGroup({
-      rollNumber: new FormControl("", []),
-      term: new FormControl("", []),
-      year: new FormControl("", []),
-      subjectCode: new FormControl("", []) 
+      rollNumber: new FormControl('', []),
+      term: new FormControl('', []),
+      year: new FormControl('', []),
+      subjectCode: new FormControl('', []) 
     });
+    this.commonService.getSubjectCodes(
+      (subjectCodes) => {this.subjectCodes = subjectCodes; this.subjectCodes.unshift(null)} 
+      )
   }
 
   clearForm(){
@@ -51,8 +63,36 @@ export class QueryFormComponent implements OnInit {
       Number(this.queryForm.get(queryFormFeilds.YEAR).value),
     )
     return queryData;
-
   }
+
+  submitQuery(){
+
+    let params = new HttpParams()
+    .append("rollNumber", this.queryForm.get("rollNumber").value)
+    .append("subjectode", this.queryForm.get("subjectCode").value)
+    .append("term", this.queryForm.get("term").value)
+    .append("year", this.queryForm.get("year").value)
+
+    
+
+    let query = new QueryVO(
+      this.queryForm.get("rollNumber").value,
+      this.queryForm.get("subjectCode").value,
+      null,
+      this.queryForm.get("term").value,
+      this.queryForm.get("year").value
+    );
+
+    this.queryService.getMarks(params).subscribe(
+      (data) => {
+        this.commonService.loadComponent("/results", {'query':query, 'marks':data})
+      },
+      (error)=>{
+        this.toastrService.error("Cannot fetch results", "Failed");
+      })    
+  }
+  
+
 
 
 }

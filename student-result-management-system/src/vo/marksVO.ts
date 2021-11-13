@@ -2,7 +2,7 @@ import { RowOperation } from "src/enums/rowOperation";
 
 export class MarksVO{
     constructor(
-        protected rollNumber: string,
+        protected rollNo: string,
         protected subjectCode: string,
         protected subjectName: string,
         protected marksObtained: number,
@@ -10,11 +10,11 @@ export class MarksVO{
         protected grade: string,
         protected year: number,
         protected term: number,
-        protected state: RowOperation
+        protected operation: RowOperation
     ){}
 
-    getRollNumber(){
-        return this.rollNumber
+    getRollNo(){
+        return this.rollNo
     }
 
     getSubjectCode(){
@@ -45,8 +45,8 @@ export class MarksVO{
         return this.year
     }
 
-    getState(){
-        return this.state
+    getOperation(){
+        return this.operation;
     }
 
 

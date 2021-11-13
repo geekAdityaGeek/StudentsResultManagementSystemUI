@@ -19,6 +19,7 @@ export class TableComponent implements OnInit {
   @Output() changedDataEvent = new EventEmitter();
   
   modifiedData:string[][] = []; 
+  editableOperations:RowOperation[] = [RowOperation.UPDATE, RowOperation.RESOLVE, RowOperation.REJECT]
 
   buttonList:any[] = [
     {label: "UPDATE", rowOp: RowOperation.UPDATE, classDesc:"btn btn-primary btn-sm", rowColor:"#ffff80"},
@@ -33,7 +34,9 @@ export class TableComponent implements OnInit {
   constructor() {  }
   
   ngOnInit() {
-    console.log(this.data);
+    if(!this.data){
+      return;
+    }
     for(let idx=0; idx<this.data.length; idx++){
       this.rowStatus.push(RowOperation.NONE)
     }
@@ -96,8 +99,8 @@ export class TableComponent implements OnInit {
     return 0.75 
   }
 
-  isUpdateClicked(rowNo: number){
-    return this.rowStatus[rowNo] == RowOperation.UPDATE 
+  isUpdatable(rowNo: number){
+    return this.editableOperations.includes(this.rowStatus[rowNo])   
   }
 
   getRowColor(rowNo:number){

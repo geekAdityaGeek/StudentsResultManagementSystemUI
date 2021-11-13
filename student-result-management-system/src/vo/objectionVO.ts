@@ -17,5 +17,9 @@ export class ObjectionVO extends MarksVO{
         super(rollNumber, subjectCode, subjectName, marksObtained, totalMarks, grade, year, term, state)
         this.comments = comments;
     }
+
+    getComments(){
+        return this.comments;
+    }
     
 }

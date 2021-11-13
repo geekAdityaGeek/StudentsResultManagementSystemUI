@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title"> View Results </h5>
+        <h5 class="card-title"> QUERY RESULTS </h5>
         <hr />
         <form [formGroup]="queryForm">
           <div class="form-row">
@@ -17,11 +17,7 @@
                   <label for="querySubject">Subject</label>
                   <select class="form-control" id="querySubject" 
                   formControlName="subjectCode">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                  <option *ngFor="let item of subjectCodes">{{ item }}</option>
                   </select>
               </div>            
           </div>
@@ -31,6 +27,7 @@
                 <input type="text" 
                 class="form-control" 
                 id="queryTerm" 
+                formControlName="term"
                 placeholder="Term">
               </div>
               <div class="form-group col-sm-6">
@@ -38,15 +35,13 @@
                 <input type="text" 
                 class="form-control" 
                 id="queryYear" 
+                formControlName="year"
                 placeholder="Year">
               </div>
           </div>
           <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             <button type="button" class="btn btn-primary" (click)="clearForm()">Clear</button>
-            <custom-submit-button [btnLabel]="submitButtonLabel" 
-            [requestUrl]="submitRequestUrl"
-            [requestData]="dataExtractor()"
-            [componentUrl]="submitButtonNextPageUrl"></custom-submit-button>
+            <button type="submit" class="btn btn-primary" (click)="submitQuery()">Submit</button>
         </div>
         </form>        
     </div>

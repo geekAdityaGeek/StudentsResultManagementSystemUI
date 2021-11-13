@@ -17,18 +17,6 @@ export class UploadService {
     );
   }
 
-  fetchTerms(): Observable<any> {
-    return this.http.get(
-      environment.apiConfig.base_url + "moderator/getUniqueTerms"
-    );
-  }
-
-  fetchSubjectCodes(): Observable<any> {
-    return this.http.get(
-      environment.apiConfig.base_url + "moderator/getListSubjCodeName"
-    );
-  }
-
   bulkUpload(file: File) {
     let body = new FormData();
     body.append("file", file);

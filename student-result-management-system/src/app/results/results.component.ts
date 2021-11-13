@@ -1,7 +1,12 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RowOperation } from 'src/enums/rowOperation';
+import { environment } from 'src/environments/environment';
 import { MarksVO } from 'src/vo/marksVO';
+import { QueryVO } from 'src/vo/queryVO';
+import { CommonService } from '../services/common.service';
+import { ResultService } from '../services/result.service';
 
 @Component({
   selector: 'results',
@@ -24,21 +29,30 @@ export class ResultsComponent implements OnInit {
   operationList:RowOperation[] = [];
   updatedMarks:MarksVO[] = [];
   deletedMarks:MarksVO[] = [];
+  queryVO: QueryVO;
 
 
-  constructor(private router:Router, private activatedRoute:ActivatedRoute) { 
-    this.resultData = <MarksVO[]>this.router.getCurrentNavigation().extras.state
+  constructor(private router:Router, 
+    private activatedRoute:ActivatedRoute, 
+    private commonService: CommonService,
+    private resultService: ResultService) { 
+
+    let responseData = <any>this.router.getCurrentNavigation().extras.state
+    this.resultData = this.commonService.mapToMarksData(responseData['marks']);
+    this.queryVO = <QueryVO>responseData['query'] 
     if(this.resultData == undefined)  
       this.router.navigateByUrl('home')
     this.convertToResultArray()
     this.allowedOperation()
+    
   }
 
   convertToResultArray(){
     this.arrayResultData = [];
     for(let i=0;i<this.resultData.length;i++){
       this.arrayResultData.push([]);
-      this.arrayResultData[i].push(this.resultData[i].getRollNumber())
+      console.log(typeof this.resultData[i])
+      this.arrayResultData[i].push(this.resultData[i].getRollNo())
       this.arrayResultData[i].push(this.resultData[i].getSubjectCode()
                   +":"+this.resultData[i].getSubjectName())
       this.arrayResultData[i].push(this.resultData[i].getYear().toString())
@@ -56,7 +70,7 @@ export class ResultsComponent implements OnInit {
     this.operationList.push(RowOperation.DELETE);
   }
 
-  updateData(changedData:any){debugger
+  updateData(changedData:any){
     this.updatedMarks = [];
     this.deletedMarks = [];
     for(let idx=0; idx<changedData.length; idx++){
@@ -72,15 +86,20 @@ export class ResultsComponent implements OnInit {
         changedData[idx][3],
         changedData[idx][7],        
       );
-      if(marks.getState() == RowOperation.UPDATE){
+      if(marks.getOperation() == RowOperation.UPDATE){
         this.updatedMarks.push(marks)
-      }else if(marks.getState() == RowOperation.DELETE){
+      }else if(marks.getOperation() == RowOperation.DELETE){
         this.deletedMarks.push(marks)
       }
     }  
   }
 
-  dataExtractor = () => {debugger;
+  dataExtractor = () => {
+    let finalData = {};
+    finalData['columnHeading']=["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "OPERATION"]
+    finalData['colWidth'] = ["15%","30%","10%","10%","10%", "10%", "10%"]
+    finalData['savingUrl'] = "moderator/updateMarks"
+    
     let requestData: MarksVO[] = [];
     for(let idx=0;idx<this.updatedMarks.length;idx++){
       requestData.push(this.updatedMarks[idx])
@@ -88,7 +107,19 @@ export class ResultsComponent implements OnInit {
     for(let idx=0;idx<this.deletedMarks.length;idx++){
       requestData.push(this.deletedMarks[idx])
     }
-    return requestData
+
+    finalData['data'] = requestData;
+    return finalData
+  }
+
+  getDownloadLink(){
+    let params = new HttpParams()
+    .append("rollNumber", this.queryVO["rollNumber"])
+    .append("subjectode", this.queryVO["subjectCode"])
+    .append("term", this.queryVO["term"].toString())
+    .append("year", this.queryVO["year"].toString())
+    
+    return environment.apiConfig.base_url + "download/result/pdf?"+params.toString()
   }
 
 }
