@@ -3,7 +3,7 @@ import { MarksVO } from "./marksVO";
 
 export class ObjectionVO extends MarksVO{
     constructor(
-        protected rollNumber: string,
+        protected rollNo: string,
         protected subjectCode: string,
         protected subjectName: string,
         protected marksObtained: number,
@@ -12,9 +12,9 @@ export class ObjectionVO extends MarksVO{
         protected year: number,
         protected term: number,
         protected comments: string,
-        protected state: RowOperation
+        protected operation: RowOperation
     ){
-        super(rollNumber, subjectCode, subjectName, marksObtained, totalMarks, grade, year, term, state)
+        super(rollNo, subjectCode, subjectName, marksObtained, totalMarks, grade, year, term, operation)
         this.comments = comments;
     }
 

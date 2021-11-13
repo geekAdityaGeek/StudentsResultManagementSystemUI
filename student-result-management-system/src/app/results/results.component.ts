@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { RowOperation } from 'src/enums/rowOperation';
 import { environment } from 'src/environments/environment';
 import { MarksVO } from 'src/vo/marksVO';
@@ -30,12 +31,16 @@ export class ResultsComponent implements OnInit {
   updatedMarks:MarksVO[] = [];
   deletedMarks:MarksVO[] = [];
   queryVO: QueryVO;
-
+  currPage:number = 0;
+  
+  
 
   constructor(private router:Router, 
     private activatedRoute:ActivatedRoute, 
     private commonService: CommonService,
-    private resultService: ResultService) { 
+    private resultService: ResultService,
+    private toastrService: ToastrService
+    ) { 
 
     let responseData = <any>this.router.getCurrentNavigation().extras.state
     this.resultData = this.commonService.mapToMarksData(responseData['marks']);
@@ -120,6 +125,34 @@ export class ResultsComponent implements OnInit {
     .append("year", this.queryVO["year"].toString())
     
     return environment.apiConfig.base_url + "download/result/pdf?"+params.toString()
+  }
+
+  previousPage(){
+    this.resultService.getPreviousPage(this.currPage, environment.apiConfig.items_per_page, this.queryVO).subscribe(
+      (data) => {
+        this.resultData = this.commonService.mapToMarksData(data);
+        this.convertToResultArray();  
+        this.currPage-=1
+        console.log(this.currPage)
+      },
+      (error) => {
+        this.toastrService.error(error.error.message, "Failed");
+      }
+    )
+  }
+
+  nextPage(){
+    this.resultService.getNextPage(this.currPage, environment.apiConfig.items_per_page, this.queryVO).subscribe(
+      (data) => {
+        this.resultData = this.commonService.mapToMarksData(data);
+        this.convertToResultArray();  
+        this.currPage+=1
+        console.log(this.currPage)
+      },
+      (error) => {
+        this.toastrService.error(error.error.message, "Failed");
+      }
+    )
   }
 
 }

@@ -32,7 +32,7 @@ export class ObjectionsComponent implements OnInit {
     this.arrayResultData = [];
     for(let i=0;i<this.objectionData.length;i++){
       this.arrayResultData.push([]);
-      this.arrayResultData[i].push(this.objectionData[i].getRollNumber())
+      this.arrayResultData[i].push(this.objectionData[i].getRollNo())
       this.arrayResultData[i].push(this.objectionData[i].getSubjectCode()
                   +":"+this.objectionData[i].getSubjectName())
       this.arrayResultData[i].push(this.objectionData[i].getYear().toString())
@@ -79,9 +79,9 @@ export class ObjectionsComponent implements OnInit {
         changedData[idx][7],  
         changedData[idx][8]      
       );
-      if(objection.getState() == RowOperation.REJECT){
+      if(objection.getOperation() == RowOperation.REJECT){
         this.rejectedObjections.push(objection)
-      }else if(objection.getState() == RowOperation.RESOLVE){
+      }else if(objection.getOperation() == RowOperation.RESOLVE){
         this.resolvedObjections.push(objection)
       }
     }  

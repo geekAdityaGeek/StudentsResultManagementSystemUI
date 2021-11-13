@@ -5,6 +5,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from 'src/app/services/common.service';
 import { QueryService } from 'src/app/services/query.service';
+import { ResultService } from 'src/app/services/result.service';
+import { environment } from 'src/environments/environment';
 import { QueryVO } from 'src/vo/queryVO';
 
 
@@ -34,7 +36,8 @@ export class QueryFormComponent implements OnInit {
   
   constructor(private commonService: CommonService,
     private toastrService: ToastrService,
-    private queryService: QueryService
+    private queryService: QueryService,
+    private resultService: ResultService
     ) { }
 
   ngOnInit() {
@@ -65,7 +68,7 @@ export class QueryFormComponent implements OnInit {
     return queryData;
   }
 
-  submitQuery(){
+  submitQuery(){debugger
 
     let params = new HttpParams()
     .append("rollNumber", this.queryForm.get("rollNumber").value)
@@ -83,13 +86,15 @@ export class QueryFormComponent implements OnInit {
       this.queryForm.get("year").value
     );
 
-    this.queryService.getMarks(params).subscribe(
-      (data) => {
-        this.commonService.loadComponent("/results", {'query':query, 'marks':data})
-      },
-      (error)=>{
-        this.toastrService.error("Cannot fetch results", "Failed");
-      })    
+      debugger
+      this.resultService.getNextPage(-1, environment.apiConfig.items_per_page, query).subscribe(
+        (data) => {debugger
+          this.commonService.loadComponent("/results", {'query':query, 'marks':data})
+        },
+        (error) => {
+          this.toastrService.error(error.error.message, "Failed");
+        }
+      )
   }
   
 
