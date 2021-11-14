@@ -34,9 +34,9 @@ export class HttpCalIInterceptor implements HttpInterceptor {
     if (decoded == null || decoded.exp > time)
       this.authenticationService.logout();
     if (
-      request.url != environment.apiConfig.base_url + "/register" &&
-      request.url != environment.apiConfig.base_url + "/login" &&
-      request.url != environment.apiConfig.base_url + "/allRoles"
+      request.url != environment.apiConfig.base_url + "register" &&
+      request.url != environment.apiConfig.base_url + "authenticate" && 
+      request.url != environment.apiConfig.base_url + "allRoles"
     ) {
       let modifiedurl = request.clone({
         headers: new HttpHeaders().append(
