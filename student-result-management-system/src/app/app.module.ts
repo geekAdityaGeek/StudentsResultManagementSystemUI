@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatMenuModule } from '@angular/material';
@@ -27,6 +27,9 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
+import { CookieService } from 'ngx-cookie-service';
+import { HttpCalIInterceptor } from './httpinterceptor/http.interceptor';
 
 
 
@@ -47,6 +50,7 @@ import { FormsModule } from '@angular/forms';
     TableComponent,
     RegisterformComponent,
     ConfirmationComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,11 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [CookieService,{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpCalIInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

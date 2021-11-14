@@ -46,11 +46,13 @@ export class RegisterformComponent implements OnInit {
     this.toastrService.success("Registration Form loaded!");
     this.authenticationService.fetchRoles().subscribe(
       (data: any) => {
+        // console.log(data);
         for (var i = 0; i < data.length; i++) this.Roles.push(data[i]);
         this.toastrService.success("Roles fetched successfully!");
       },
       (error: HttpErrorResponse) => {
-        this.toastrService.error(error.error);
+        console.log(error);
+        this.toastrService.error(error.error.message,"Role not fetched successfully!");
       }
     );
     this.registerform = new FormGroup(
