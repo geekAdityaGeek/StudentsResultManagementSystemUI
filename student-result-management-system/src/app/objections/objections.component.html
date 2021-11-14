@@ -1,1 +1,18 @@
-<p>objections works!</p>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">OBJECTIONS</h5>
+        <hr />
+        
+        <custom-table [data]="arrayResultData" 
+        [colTitle]="columnHeading"
+        [colWidth]="colWidth"
+        [operationAllowed]="operationList"
+        (changedDataEvent)="updateData($event)"></custom-table>
+
+        <custom-submit-button [btnLabel]="submitBtnLabel" 
+        [componentUrl]="userConf"
+        [requestData]="dataExtractor()"></custom-submit-button>
+
+    </div>
+</div>
+        

@@ -1,40 +1,48 @@
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title"> View Results </h5>
+        <h5 class="card-title"> QUERY RESULTS </h5>
         <hr />
-        <div class="form-row">
-            <div class="form-group col-sm-6">
-              <label for="queryRoll">Roll Number</label>
-              <input type="text" class="form-control" id="queryRoll" placeholder="Roll Number">
-            </div>
+        <form [formGroup]="queryForm">
+          <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="queryRoll">Roll Number</label>
+                <input type="text" 
+                class="form-control" 
+                id="queryRoll" 
+                formControlName="rollNumber"
+                placeholder="Roll Number">
+              </div>
 
-            <div class="form-group col-sm-6">
-                <label for="querySubject">Subject</label>
-                <select class="form-control" id="querySubject">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </select>
-            </div>            
+              <div class="form-group col-sm-6">
+                  <label for="querySubject">Subject</label>
+                  <select class="form-control" id="querySubject" 
+                  formControlName="subjectCode">
+                  <option *ngFor="let item of subjectCodes">{{ item }}</option>
+                  </select>
+              </div>            
+          </div>
+          <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="queryTerm">Term</label>
+                <input type="text" 
+                class="form-control" 
+                id="queryTerm" 
+                formControlName="term"
+                placeholder="Term">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="queryYear">Year</label>
+                <input type="text" 
+                class="form-control" 
+                id="queryYear" 
+                formControlName="year"
+                placeholder="Year">
+              </div>
+          </div>
+          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary" (click)="clearForm()">Clear</button>
+            <button type="submit" class="btn btn-primary" (click)="submitQuery()">Submit</button>
         </div>
-        <div class="form-row">
-            <div class="form-group col-sm-6">
-              <label for="queryTerm">Term</label>
-              <input type="number" class="form-control" id="queryTerm" placeholder="Term">
-            </div>
-            <div class="form-group col-sm-6">
-              <label for="queryYear">Year</label>
-              <input type="text" class="form-control" id="queryYear" placeholder="Year">
-            </div>
-        </div>
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-primary">Clear</button>
-            <custom-submit-button [btnLabel]="submitButtonLabel" 
-            [requestUrl]="submitRequestUrl"
-            [requestData]="formData"
-            [componentUrl]="submitButtonNextPageUrl"></custom-submit-button>
-        </div>
+        </form>        
     </div>
 </div>

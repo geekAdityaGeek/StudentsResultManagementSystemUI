@@ -8,7 +8,7 @@
 
     <tbody>
         <tr *ngFor="let rowData of data; let rowNo = index" [style.backgroundColor]="getRowColor(rowNo)">
-            <ng-container *ngIf="!isUpdateClicked(rowNo); else editableRow">
+            <ng-container *ngIf="!isUpdatable(rowNo); else editableRow">
                 <td [style.width]="getColWidth(colNo)" 
                 *ngFor="let cellData of rowData; let colNo = index">{{cellData}}</td>
             </ng-container>
@@ -16,7 +16,7 @@
                 <td [style.width]="getColWidth(colNo)" 
                 *ngFor="let cellData of rowData; let colNo = index">
                 <input class="form-control"  type="text" 
-                [(ngModel)]="modifiedData[rowNo][colNo]" (ngModelChange)="onChange($event, rowNo)">                
+                [(ngModel)]="modifiedData[rowNo][colNo]" (ngModelChange)="onChange()">                
                 </td>
             </ng-template>
 
