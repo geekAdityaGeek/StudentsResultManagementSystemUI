@@ -8,6 +8,7 @@ import { Upload } from "../upload/upload.model";
   providedIn: "root",
 })
 export class UploadService {
+  
   constructor(private http: HttpClient) {}
 
   uploadMarks(uploadObj: Upload): Observable<any> {
@@ -22,6 +23,15 @@ export class UploadService {
     body.append("file", file);
     return this.http.post(
       environment.apiConfig.base_url + "moderator/bulkUpload",
+      body
+    );
+  }
+
+  bulkUpdate(bulkUpdateFile: File) {
+    let body = new FormData();
+    body.append("file", bulkUpdateFile);
+    return this.http.post(
+      environment.apiConfig.base_url + "moderator/bulkUpdate",
       body
     );
   }
