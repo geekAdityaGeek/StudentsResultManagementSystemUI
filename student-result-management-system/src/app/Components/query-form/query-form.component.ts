@@ -88,11 +88,11 @@ export class QueryFormComponent implements OnInit {
 
       debugger
       this.resultService.getNextPage(-1, environment.apiConfig.items_per_page, query).subscribe(
-        (data) => {debugger
+        (data) => {
           this.commonService.loadComponent("/results", {'query':query, 'marks':data})
         },
         (error) => {
-          this.toastrService.error(error.error.message, "Failed");
+          this.toastrService.error(error.error, "Failed");
         }
       )
   }
