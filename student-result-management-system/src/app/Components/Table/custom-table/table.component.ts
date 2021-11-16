@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MarksVO } from 'src/vo/marksVO';
 import {RowOperation} from '../../../../enums/rowOperation'
 
 @Component({
@@ -7,15 +6,16 @@ import {RowOperation} from '../../../../enums/rowOperation'
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnChanges {
 
-  @Input() data:string[][]
+ 
+  @Input() data: string[][]
   @Input() colTitle:string[]
   @Input() colWidth:string[]
   @Input() rowStatus:RowOperation[] = [];
   @Input() operationAllowed: RowOperation[] = []
-  @Input() originalData:MarksVO[]
-
+  @Input() isNotFullyEditable: boolean;
+  
   @Output() changedDataEvent = new EventEmitter();
   
   modifiedData:string[][] = []; 
@@ -32,31 +32,42 @@ export class TableComponent implements OnInit {
   allowedBtnList:any[] = [];
 
   constructor() {  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['data']){
+      let changedData = changes['data']['currentValue'];
+      this.rowStatus = []
+      debugger;
+      for(let idx=0; idx<this.data.length; idx++){
+        let operation: string = this.data[idx][this.data[idx].length-1]
+        this.rowStatus.push(RowOperation[operation])
+      }
+      for(let idx=0;idx<this.data.length;idx++){
+        this.modifiedData.push([]);
+        this.fillModifiedData(idx)      
+      }
+    }
+  }
   
   ngOnInit() {
-    if(!this.data){
-      return;
-    }
-    for(let idx=0; idx<this.data.length; idx++){
-      this.rowStatus.push(RowOperation.NONE)
-    }
+        
     for(let idx=0;idx<this.buttonList.length;idx++){
       if(this.operationAllowed.includes(this.buttonList[idx].rowOp)){
         this.allowedBtnList.push(this.buttonList[idx])
       }
     }
-    for(let idx=0;idx<this.data.length;idx++){
-      this.modifiedData.push([]);
-      this.fillModifiedData(idx)      
-    }    
-  }
+    
+    
 
+  }
+  
   fillModifiedData(rowId: number){
     for(let idxInner=0;idxInner<this.data[rowId].length;idxInner++){
       this.modifiedData[rowId].push(this.data[rowId][idxInner])
     }
-    this.modifiedData[rowId].push(RowOperation.NONE)
   }
+
   getColWidth(colNo){
     return this.colWidth[colNo]
   }
@@ -103,14 +114,13 @@ export class TableComponent implements OnInit {
     return this.editableOperations.includes(this.rowStatus[rowNo])   
   }
 
-  getRowColor(rowNo:number){
-    
+  getRowColor(rowNo:number){    
     for(let idx=0; idx<this.allowedBtnList.length;idx++){
       if(this.rowStatus[rowNo] == this.allowedBtnList[idx].rowOp){
         return this.allowedBtnList[idx].rowColor
       }
     }
-    return null;
+    return null;    
   }
 
   onChange(){

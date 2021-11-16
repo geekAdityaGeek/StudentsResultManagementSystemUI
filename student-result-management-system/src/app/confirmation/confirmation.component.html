@@ -2,7 +2,10 @@
     <div class="card-body">
         <h5 class="card-title">CONFIRMATION</h5>
         <hr />
-        <custom-table [data]="arrayResultData" [colTitle]="columnHeading" [colWidth]="colWidth"></custom-table>
+        <custom-table [data]="arrayResultData" 
+        [colTitle]="columnHeading" 
+        [colWidth]="colWidth"
+        [isNotFullyEditable]="true"></custom-table>
 
         
         <button *ngIf="!opSuccess" class="btn btn-primary" (click)="cancelOperation()">Cancel</button>

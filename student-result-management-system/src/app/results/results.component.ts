@@ -30,6 +30,7 @@ export class ResultsComponent implements OnInit {
   operationList:RowOperation[] = [];
   updatedMarks:MarksVO[] = [];
   deletedMarks:MarksVO[] = [];
+  objectedMarks:MarksVO[] = [];
   queryVO: QueryVO;
   currPage:number = 0;
   
@@ -64,7 +65,8 @@ export class ResultsComponent implements OnInit {
       this.arrayResultData[i].push(this.resultData[i].getTerm().toString())
       this.arrayResultData[i].push(this.resultData[i].getMarksObtained().toString())
       this.arrayResultData[i].push(this.resultData[i].getTotalMarks().toString())
-      this.arrayResultData[i].push(this.resultData[i].getGrade())      
+      this.arrayResultData[i].push(this.resultData[i].getGrade()) 
+      this.arrayResultData[i].push(RowOperation.NONE)      
     }
   }
 
@@ -73,11 +75,13 @@ export class ResultsComponent implements OnInit {
   allowedOperation(){
     this.operationList.push(RowOperation.UPDATE);
     this.operationList.push(RowOperation.DELETE);
+    this.operationList.push(RowOperation.OBJECTION);
   }
 
-  updateData(changedData:any){
+  updateData(changedData:any){debugger
     this.updatedMarks = [];
     this.deletedMarks = [];
+    this.objectedMarks = [];
     for(let idx=0; idx<changedData.length; idx++){
       let subjectInfo = changedData[idx][1].split(":")
       let marks = new MarksVO(
@@ -91,10 +95,13 @@ export class ResultsComponent implements OnInit {
         changedData[idx][3],
         changedData[idx][7],        
       );
+      debugger
       if(marks.getOperation() == RowOperation.UPDATE){
         this.updatedMarks.push(marks)
       }else if(marks.getOperation() == RowOperation.DELETE){
         this.deletedMarks.push(marks)
+      }else if(marks.getOperation() == RowOperation.OBJECTION){
+        this.objectedMarks.push(marks)
       }
     }  
   }
@@ -103,14 +110,17 @@ export class ResultsComponent implements OnInit {
     let finalData = {};
     finalData['columnHeading']=["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "OPERATION"]
     finalData['colWidth'] = ["15%","30%","10%","10%","10%", "10%", "10%"]
-    finalData['savingUrl'] = "moderator/updateMarks"
-    
+    //finalData['savingUrl'] = "moderator/updateMarks"
+    finalData['savingUrl']="objection/raiseObjection"
     let requestData: MarksVO[] = [];
     for(let idx=0;idx<this.updatedMarks.length;idx++){
       requestData.push(this.updatedMarks[idx])
     }
     for(let idx=0;idx<this.deletedMarks.length;idx++){
       requestData.push(this.deletedMarks[idx])
+    }
+    for(let idx=0;idx<this.objectedMarks.length;idx++){
+      requestData.push(this.objectedMarks[idx])
     }
 
     finalData['data'] = requestData;
