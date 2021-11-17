@@ -1,7 +1,9 @@
-import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ModeratorResultConf } from 'src/configurations/moderatorResultConf';
+import { ResultRoleConf } from 'src/configurations/ResultRoleConf';
+import { StudentResultConf } from 'src/configurations/studentResultConf';
 import { RowOperation } from 'src/enums/rowOperation';
 import { environment } from 'src/environments/environment';
 import { MarksVO } from 'src/vo/marksVO';
@@ -28,29 +30,25 @@ export class ResultsComponent implements OnInit {
   prevPageBtnLabel:string = "Previous"
   nextPageBtnLabel:string = "Next"
   operationList:RowOperation[] = [];
-  updatedMarks:MarksVO[] = [];
-  deletedMarks:MarksVO[] = [];
-  objectedMarks:MarksVO[] = [];
   queryVO: QueryVO;
   currPage:number = 0;
+  configurer:ResultRoleConf;
   
-  
-
   constructor(private router:Router, 
     private activatedRoute:ActivatedRoute, 
     private commonService: CommonService,
     private resultService: ResultService,
     private toastrService: ToastrService
     ) { 
-
-    let responseData = <any>this.router.getCurrentNavigation().extras.state
-    this.resultData = this.commonService.mapToMarksData(responseData['marks']);
-    this.queryVO = <QueryVO>responseData['query'] 
-    if(this.resultData == undefined)  
-      this.router.navigateByUrl('home')
-    this.convertToResultArray()
-    this.allowedOperation()
-    
+      this.configurer = new StudentResultConf(this.commonService)
+      let responseData = <any>this.router.getCurrentNavigation().extras.state
+      this.resultData = this.commonService.mapToMarksData(responseData['marks']);
+      this.queryVO = <QueryVO>responseData['query'] 
+      if(this.resultData == undefined)  
+        this.router.navigateByUrl('home')
+      this.convertToResultArray()
+      this.operationList = this.configurer.getAllowedOperation()
+      debugger
   }
 
   convertToResultArray(){
@@ -70,71 +68,23 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {  }
 
-  allowedOperation(){
-    this.operationList.push(RowOperation.UPDATE);
-    this.operationList.push(RowOperation.DELETE);
-    this.operationList.push(RowOperation.OBJECTION);
-  }
-
-  updateData(changedData:any){debugger
-    this.updatedMarks = [];
-    this.deletedMarks = [];
-    this.objectedMarks = [];
-    for(let idx=0; idx<changedData.length; idx++){
-      let subjectInfo = changedData[idx][1].split(":")
-      let marks = new MarksVO(
-        changedData[idx][0],
-        subjectInfo[0],
-        subjectInfo[1],
-        changedData[idx][4],
-        changedData[idx][5],
-        changedData[idx][6],
-        changedData[idx][2],
-        changedData[idx][3],
-        changedData[idx][7],        
-      );
-      debugger
-      if(marks.getOperation() == RowOperation.UPDATE){
-        this.updatedMarks.push(marks)
-      }else if(marks.getOperation() == RowOperation.DELETE){
-        this.deletedMarks.push(marks)
-      }else if(marks.getOperation() == RowOperation.OBJECTION){
-        this.objectedMarks.push(marks)
-      }
-    }  
+  operatedDataProcessing(operatedData:any){
+    this.configurer.processOperatedData(operatedData)  
   }
 
   dataExtractor = () => {
     let finalData = {};
     finalData['columnHeading']=["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "OPERATION"]
     finalData['colWidth'] = ["15%","30%","10%","10%","10%", "10%", "10%"]
-    //finalData['savingUrl'] = "moderator/updateMarks"
-    finalData['savingUrl']="objection/raiseObjection"
-    let requestData: MarksVO[] = [];
-    for(let idx=0;idx<this.updatedMarks.length;idx++){
-      requestData.push(this.updatedMarks[idx])
-    }
-    for(let idx=0;idx<this.deletedMarks.length;idx++){
-      requestData.push(this.deletedMarks[idx])
-    }
-    for(let idx=0;idx<this.objectedMarks.length;idx++){
-      requestData.push(this.objectedMarks[idx])
-    }
-
-    finalData['data'] = requestData;
+    finalData['savingUrl'] = this.configurer.getOperationUrl()
+    finalData['data'] = this.configurer.getRequestDataForOperation();
     return finalData
   }
 
   getDownloadLink(){
-    let params = new HttpParams()
-    .append("rollNumber", this.queryVO["rollNumber"])
-    .append("subjectode", this.queryVO["subjectCode"])
-    .append("term", this.queryVO["term"].toString())
-    .append("year", this.queryVO["year"].toString())
-    
-    return environment.apiConfig.base_url + "download/result/pdf?"+params.toString()
+    return this.configurer.getResultDownloadLink(this.queryVO);
   }
 
   previousPage(){
@@ -143,10 +93,9 @@ export class ResultsComponent implements OnInit {
         this.resultData = this.commonService.mapToMarksData(data);
         this.convertToResultArray();  
         this.currPage-=1
-        console.log(this.currPage)
       },
-      (error) => {
-        this.toastrService.error(error.error.message, "Failed");
+      (error) => {debugger
+        this.toastrService.warning("This is the first page!!");
       }
     )
   }
@@ -157,10 +106,9 @@ export class ResultsComponent implements OnInit {
         this.resultData = this.commonService.mapToMarksData(data);
         this.convertToResultArray();  
         this.currPage+=1
-        console.log(this.currPage)
       },
-      (error) => {
-        this.toastrService.error(error.error.message, "Failed");
+      (error) => {debugger
+        this.toastrService.warning("No More Pages Present!!");
       }
     )
   }

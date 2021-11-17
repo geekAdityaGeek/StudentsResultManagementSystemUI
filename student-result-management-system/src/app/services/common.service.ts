@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { RowOperation } from 'src/enums/rowOperation';
 import { environment } from 'src/environments/environment';
 import { MarksVO } from 'src/vo/marksVO';
+import { ObjectionVO } from 'src/vo/objectionVO';
 
 @Injectable({
   providedIn: 'root'
@@ -76,21 +77,59 @@ export class CommonService {
   mapToMarksData(data){
     let marksData = [];
     for(let idx=0; idx<data.length; idx++){
-      let marks = new MarksVO(
-        data[idx].rollNo,
-        data[idx].subjectCode,
-        data[idx].subjectName,
-        data[idx].marksObtained,
-        data[idx].totalMarks,
-        data[idx].grade,
-        data[idx].year,
-        data[idx].term,
-        RowOperation.NONE
-      );
+      let marks = this.mapToMarksVO(data[idx])
       marksData.push(marks)
     }
-    return marksData
-    
+    return marksData    
+  }
+
+  mapToMarksVO(data){
+    return new MarksVO(
+      data.rollNo, data.subjectCode, data.subjectName, data.marksObtained,
+      data.totalMarks, data.grade, data.year, data.term, RowOperation.NONE
+    );
+  }
+
+  mapMarksArrayToMarksVO(arrayMarks : string[]){
+    let subjectInfo = arrayMarks[1].split(":");
+    let marks = new MarksVO(
+      arrayMarks[0], subjectInfo[0], subjectInfo[1], Number(arrayMarks[4]),
+      Number(arrayMarks[5]), arrayMarks[6], Number(arrayMarks[2]), Number(arrayMarks[3]),
+      RowOperation[ arrayMarks[7] ]
+    );
+    return marks
+  }
+
+  mapToObjectionData(data: any){debugger
+    let objectionData = [];
+    for(let idx=0; idx<data.length; idx++){
+      let objection = this.mapToObjectionVO(data[idx])
+      objectionData.push(objection)
+    }
+    return objectionData
+  }
+
+  mapToObjectionVO(data){
+    return new ObjectionVO(
+      data.rollNo, data.subjectCode, data.subjectName, data.marksObtained,
+      data.totalMarks, data.grade, data.year, data.term, data.comments, data.status
+    );
+  }
+
+  mapObjectionArrayToObjectionVO(arrayObjection: string[]){
+    let subjectInfo = arrayObjection[1].split(":")
+    let objection = new ObjectionVO(
+      arrayObjection[0],
+      subjectInfo[0],
+      subjectInfo[1],
+      Number(arrayObjection[4]),
+      Number(arrayObjection[5]),
+      arrayObjection[6],
+      Number(arrayObjection[2]),
+      Number(arrayObjection[3]),
+      arrayObjection[7],  
+      RowOperation[arrayObjection[8]])      
+    return objection;
   }
 
 

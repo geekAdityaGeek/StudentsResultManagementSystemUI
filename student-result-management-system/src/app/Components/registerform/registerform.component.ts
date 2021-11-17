@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { AuthenticationService } from "src/app/services/authentication.service";
-import { userDetailsVO } from "../../../vo/userDetailsVO.model";
+import { UserDetailsVO } from "../../../vo/userDetailsVO.model";
 import {
   NgbModule,
   NgbDate,
@@ -19,7 +19,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class RegisterformComponent implements OnInit {
   registerform: FormGroup;
   Roles = [];
-  userDetails: userDetailsVO;
+  userDetails: UserDetailsVO;
   parserformatter: NgbDateParserFormatter;
   match(control: FormControl) {
     if (control.get("password").value !== control.get("confirmPassword").value)
@@ -98,12 +98,12 @@ export class RegisterformComponent implements OnInit {
       this.registerform.get("firstname").value +
       " " +
       this.registerform.get("lastname").value;
-    this.userDetails = new userDetailsVO(
+    this.userDetails = new UserDetailsVO(
       name,
       this.registerform.get("gender").value,
       this.registerform.get("contactno").value,
       this.registerform.get("role").value,
-      this.registerform.get("id").value,
+      this.registerform.get("extId").value,
       this.registerform.get("address").value,
       this.parserFormatter.format(this.registerform.controls["dob"].value),
       this.registerform.get("email").value,

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { userDetailsVO } from "src/vo/userDetailsVO.model";
+import { UserDetailsVO } from "src/vo/userDetailsVO.model";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
 import { LoginCredentialsVO } from "src/vo/LoginCredentialsVO.model";
@@ -19,7 +19,7 @@ export class AuthenticationService {
   fetchRoles() {
     return this.http.get(environment.apiConfig.base_url + "allRoles");
   }
-  registerUser(userDetails: userDetailsVO): Observable<any> {
+  registerUser(userDetails: UserDetailsVO): Observable<any> {
     return this.http.post(
       environment.apiConfig.base_url + "register",
       userDetails,
@@ -33,6 +33,7 @@ export class AuthenticationService {
       {}
     );
   }
+  
   logout() {
     this.cookieService.deleteAll();
     this.router.navigateByUrl('');

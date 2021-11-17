@@ -7,7 +7,7 @@
         [colTitle]="columnHeading"
         [colWidth]="colWidth"
         [operationAllowed]="operationList"
-        (changedDataEvent)="updateData($event)"></custom-table>
+        (changedDataEvent)="operatedDataProcessing($event)"></custom-table>
 
         <custom-submit-button [btnLabel]="submitBtnLabel" 
         [componentUrl]="userConf"

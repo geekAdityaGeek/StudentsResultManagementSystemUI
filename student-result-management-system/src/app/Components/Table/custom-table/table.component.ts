@@ -35,7 +35,7 @@ export class TableComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['data']){
+    if(changes['data'] && changes['data']['currentValue']){
       let changedData = changes['data']['currentValue'];
       this.rowStatus = []
       debugger;
@@ -50,16 +50,14 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
   
-  ngOnInit() {
-        
+  ngOnInit() {      
     for(let idx=0;idx<this.buttonList.length;idx++){
       if(this.operationAllowed.includes(this.buttonList[idx].rowOp)){
         this.allowedBtnList.push(this.buttonList[idx])
       }
     }
-    
-    
-
+    console.log(this.operationAllowed)
+    console.log(this.allowedBtnList)
   }
   
   fillModifiedData(rowId: number){

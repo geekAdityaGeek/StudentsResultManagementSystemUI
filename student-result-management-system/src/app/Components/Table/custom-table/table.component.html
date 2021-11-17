@@ -10,14 +10,14 @@
         <tr *ngFor="let rowData of data; let rowNo = index" [style.backgroundColor]="getRowColor(rowNo)">
             <ng-container *ngIf="!isNotFullyEditable && isUpdatable(rowNo); else nonEditableRow">
                 <td [style.width]="getColWidth(colNo)" 
-                *ngFor="let cellData of rowData; let colNo = index">
+                *ngFor="let cellData of rowData | slice:0:rowData.length-1; let colNo = index;">
                 <input class="form-control"  type="text" 
                 [(ngModel)]="modifiedData[rowNo][colNo]" (ngModelChange)="onChange()">                
                 </td>
             </ng-container>
             <ng-template #nonEditableRow>   
                 <td [style.width]="getColWidth(colNo)" 
-                *ngFor="let cellData of rowData; let colNo = index">{{cellData}}</td>
+                *ngFor="let cellData of rowData | slice:0:rowData.length-1; let colNo = index">{{cellData}}</td>
             </ng-template>
 
             <!-- Buttons in the table -->

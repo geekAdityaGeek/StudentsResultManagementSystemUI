@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiConfig:{
     base_url:"http://localhost:8080/",
-    items_per_page: 3
+    items_per_page: 10
   }
 };
 

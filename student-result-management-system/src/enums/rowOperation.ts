@@ -7,6 +7,7 @@ export enum RowOperation {
     RESOLVE = "RESOLVE",
     REJECT = "REJECT",
     OBJECTION = "OBJECTION",
-    INSERT = "INSERT"
+    INSERT = "INSERT",
+    DOWNLOAD_RESULT = "DOWNLOAD RESULT"
   }
   

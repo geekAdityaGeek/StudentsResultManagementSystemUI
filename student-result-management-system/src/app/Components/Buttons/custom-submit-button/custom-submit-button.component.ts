@@ -28,7 +28,7 @@ export class CustomSubmitButtonComponent implements OnInit {
   fetchData(){
     debugger;
     if(!this.requestData || !this.requestData['data'] || this.requestData['data'].length == 0 ){
-      this.toastrService.error("Nothing to process", "FAILED")
+      this.toastrService.warning("No operation selected by user")
       return
     }
 
