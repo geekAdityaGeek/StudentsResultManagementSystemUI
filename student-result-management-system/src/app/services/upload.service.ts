@@ -57,7 +57,7 @@ export class UploadService {
     let body = new FormData();
     body.append("file", bulkUpdateFile);
     return this.http.post(
-      environment.apiConfig.base_url + "moderator/bulkUpdate?extId=" + decoded.sub,
+      environment.apiConfig.base_url + "moderator/bulkUpdate",
       body,
       {
         params: new HttpParams()
