@@ -103,7 +103,7 @@ export class RegisterformComponent implements OnInit {
       this.registerform.get("gender").value,
       this.registerform.get("contactno").value,
       this.registerform.get("role").value,
-      this.registerform.get("extId").value,
+      this.registerform.get("id").value,
       this.registerform.get("address").value,
       this.parserFormatter.format(this.registerform.controls["dob"].value),
       this.registerform.get("email").value,
