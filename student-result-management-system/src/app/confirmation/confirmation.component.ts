@@ -60,6 +60,7 @@ export class ConfirmationComponent implements OnInit {
       this.arrayResultData[i].push(this.resultData[i]['marksObtained'])
       this.arrayResultData[i].push(this.resultData[i]['totalMarks'])
       this.arrayResultData[i].push(this.resultData[i]['grade']) 
+      debugger
       if(this.resultData[i]['comments'])
         this.arrayResultData[i].push(this.resultData[i]['comments'])
       this.arrayResultData[i].push(this.resultData[i]['operation'])   

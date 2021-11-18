@@ -6,6 +6,7 @@
         <custom-table [data]="arrayResultData" 
         [colTitle]="columnHeading"
         [colWidth]="colWidth"
+        [disabledInputs] = "disabledInputs"
         [operationAllowed]="operationList"
         (changedDataEvent)="operatedDataProcessing($event)"></custom-table>
 

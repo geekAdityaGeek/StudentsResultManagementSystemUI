@@ -12,8 +12,8 @@ export class ModeratorObjectionConf implements ObjectionRoleConf{
     constructor(private commonService: CommonService, private objectionService: ObjectionService){}
 
 
-    getObjectionData(extId: string) {
-        return this.objectionService.getObjectionListToOperate(extId);
+    getObjectionData(extId: string, currPage: Number, itemsPerPage: Number) {
+        return this.objectionService.getObjectionListToOperate(extId, currPage, itemsPerPage);
     }
     
     getAllowedOperation(): RowOperation[] {
@@ -45,7 +45,7 @@ export class ModeratorObjectionConf implements ObjectionRoleConf{
     }
 
     public getOperationUrl(){
-        return "objection/raiseObjection";
+        return "objection/resolveObjection";
     }
 
 }

@@ -20,6 +20,7 @@ export class ResultsComponent implements OnInit {
 
   columnHeading:string[] = ["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE"]
   colWidth:string[] = ["15%","30%","10%","10%","10%", "10%", "10%"]
+  disabledInput:boolean[] = [true, true, true, true, false, false, false]
   resultData:MarksVO[]
   arrayResultData : string[][];
   backBtnLabel:string = "Back"
@@ -33,6 +34,7 @@ export class ResultsComponent implements OnInit {
   queryVO: QueryVO;
   currPage:number = 0;
   configurer:ResultRoleConf;
+  totalPage: number
   
   constructor(private router:Router, 
     private activatedRoute:ActivatedRoute, 
@@ -42,13 +44,16 @@ export class ResultsComponent implements OnInit {
     ) { 
       this.configurer = new StudentResultConf(this.commonService)
       let responseData = <any>this.router.getCurrentNavigation().extras.state
-      this.resultData = this.commonService.mapToMarksData(responseData['marks']);
+      let data = responseData['marks']
+      this.resultData = this.commonService.mapToMarksData(data['marksVOList']);
+      this.totalPage = data['totalPage']
+      this.currPage = data['currentPage']
       this.queryVO = <QueryVO>responseData['query'] 
       if(this.resultData == undefined)  
         this.router.navigateByUrl('home')
       this.convertToResultArray()
       this.operationList = this.configurer.getAllowedOperation()
-      debugger
+      
   }
 
   convertToResultArray(){
@@ -90,9 +95,10 @@ export class ResultsComponent implements OnInit {
   previousPage(){
     this.resultService.getPreviousPage(this.currPage, environment.apiConfig.items_per_page, this.queryVO).subscribe(
       (data) => {
-        this.resultData = this.commonService.mapToMarksData(data);
+        this.resultData = this.commonService.mapToMarksData(data['marksVOList']);
         this.convertToResultArray();  
         this.currPage-=1
+        this.totalPage = data['totalPage']
       },
       (error) => {debugger
         this.toastrService.warning("This is the first page!!");
@@ -102,10 +108,11 @@ export class ResultsComponent implements OnInit {
 
   nextPage(){
     this.resultService.getNextPage(this.currPage, environment.apiConfig.items_per_page, this.queryVO).subscribe(
-      (data) => {
-        this.resultData = this.commonService.mapToMarksData(data);
+      (data) => {debugger
+        this.resultData = this.commonService.mapToMarksData(data['marksVOList']);
         this.convertToResultArray();  
         this.currPage+=1
+        this.totalPage = data['totalPage']
       },
       (error) => {debugger
         this.toastrService.warning("No More Pages Present!!");
