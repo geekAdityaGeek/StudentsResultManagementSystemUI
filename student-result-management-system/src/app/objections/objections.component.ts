@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ModeratorObjectionConf } from 'src/configurations/moderatorObjectionConf';
 import { ObjectionRoleConf } from 'src/configurations/ObjectionRoleConf';
-import { StudentObjectionConf } from 'src/configurations/studentObjectionConf';
 import { RowOperation } from 'src/enums/rowOperation';
+import { environment } from 'src/environments/environment';
 import { ObjectionVO } from 'src/vo/objectionVO';
 import { CommonService } from '../services/common.service';
 import { ObjectionService } from '../services/objection.service';
@@ -18,6 +18,7 @@ export class ObjectionsComponent implements OnInit {
 
   columnHeading:string[] = ["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "COMMENTS"]
   colWidth:string[] = ["15%","15%","10%","10%","10%", "10%", "10%", "10%"]
+  disabledInputs: boolean[] = [true, true, true, true, false, false, false, false]
   objectionData:ObjectionVO[] = []
   arrayResultData : string[][];
   submitBtnLabel:string = "Submit"
@@ -28,6 +29,7 @@ export class ObjectionsComponent implements OnInit {
   operationList:RowOperation[] = [];
   objectionQueryUrl: string
   configurer: ObjectionRoleConf;
+  currPage = 0
 
   constructor(private http: HttpClient,
     private commonService: CommonService,
@@ -40,6 +42,7 @@ export class ObjectionsComponent implements OnInit {
   convertToResultArray(){debugger;
     this.arrayResultData = [];
     for(let i=0;i<this.objectionData.length;i++){
+      let objectionComments = this.objectionData[i].getOperation() ? this.objectionData[i].getOperation() : " "
       this.arrayResultData.push([]);
       this.arrayResultData[i].push(this.objectionData[i].getRollNo())
       this.arrayResultData[i].push(this.objectionData[i].getSubjectCode()
@@ -49,14 +52,14 @@ export class ObjectionsComponent implements OnInit {
       this.arrayResultData[i].push(this.objectionData[i].getMarksObtained().toString())
       this.arrayResultData[i].push(this.objectionData[i].getTotalMarks().toString())
       this.arrayResultData[i].push(this.objectionData[i].getGrade())    
-      this.arrayResultData[i].push(this.objectionData[i].getComments())  
+      this.arrayResultData[i].push(objectionComments)  
       this.arrayResultData[i].push(this.objectionData[i].getOperation())
     }
   }
 
   ngOnInit() { 
-    this.configurer.getObjectionData("MOD2020093").subscribe(
-      data => {
+    this.configurer.getObjectionData("MOD2020093", this.currPage, environment.apiConfig.items_per_page).subscribe(
+      data => {debugger
         this.objectionData = this.commonService.mapToObjectionData(data);
         this.convertToResultArray()
       },

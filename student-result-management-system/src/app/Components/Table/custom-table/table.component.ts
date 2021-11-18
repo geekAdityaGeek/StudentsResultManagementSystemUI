@@ -12,6 +12,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() data: string[][]
   @Input() colTitle:string[]
   @Input() colWidth:string[]
+  @Input() disabledInputs: boolean[]
   @Input() rowStatus:RowOperation[] = [];
   @Input() operationAllowed: RowOperation[] = []
   @Input() isNotFullyEditable: boolean;
@@ -56,8 +57,6 @@ export class TableComponent implements OnInit, OnChanges {
         this.allowedBtnList.push(this.buttonList[idx])
       }
     }
-    console.log(this.operationAllowed)
-    console.log(this.allowedBtnList)
   }
   
   fillModifiedData(rowId: number){
@@ -123,6 +122,10 @@ export class TableComponent implements OnInit, OnChanges {
 
   onChange(){
     this.changedDataEvent.emit(this.modifiedData)
+  }
+
+  isDisabledEditing(idx:number){
+    return this.disabledInputs[idx]
   }
 
 }

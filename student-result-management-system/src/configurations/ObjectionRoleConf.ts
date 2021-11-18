@@ -5,5 +5,5 @@ export interface ObjectionRoleConf extends UIConf, RoleConf{
     processOperatedData(data: any): void ;
     getOperationUrl(); 
     getRequestDataForOperation();
-    getObjectionData(extId: string);
+    getObjectionData(extId: string, currPage: Number, itemsPerPage: Number);
 }

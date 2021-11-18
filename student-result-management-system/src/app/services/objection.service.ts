@@ -15,9 +15,11 @@ export class ObjectionService {
     return this.http.get(environment.apiConfig.base_url+"objection/studentObjections", {params: parameters})
   }
 
-  getObjectionListToOperate(extId: string){
+  getObjectionListToOperate(extId: string, currPage: Number, itemsPerPage: Number){debugger
     let parameters = new HttpParams()
     .append("extId", extId)
+    .append("page", currPage.toString())
+    .append("items", itemsPerPage.toString())
     return this.http.get(environment.apiConfig.base_url+"objection/modObjections", {params: parameters})
   }
 }

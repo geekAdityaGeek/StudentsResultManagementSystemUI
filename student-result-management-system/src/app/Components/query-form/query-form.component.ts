@@ -33,6 +33,8 @@ export class QueryFormComponent implements OnInit {
   viewQuery: QueryVO;
   queryForm: FormGroup;
   subjectCodes: string[] = []
+  termList = []
+  yearList = []
   
   constructor(private commonService: CommonService,
     private toastrService: ToastrService,
@@ -48,8 +50,13 @@ export class QueryFormComponent implements OnInit {
       subjectCode: new FormControl('', []) 
     });
     this.commonService.getSubjectCodes(
-      (subjectCodes) => {this.subjectCodes = subjectCodes; this.subjectCodes.unshift(null)} 
-      )
+      (subjectCodes) => {this.subjectCodes = subjectCodes; this.subjectCodes.unshift(null)})
+    this.commonService.fetchTerms().subscribe(
+      data => {this.termList = data, this.termList.unshift(null) },
+      error => this.toastrService.error("Unable to get terms", "FAILURE")
+    )
+    this.yearList = this.commonService.getYears()
+    this.yearList.unshift(null);
   }
 
   clearForm(){
