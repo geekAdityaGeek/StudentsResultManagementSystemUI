@@ -47,9 +47,7 @@ export class CustomNavbarComponent implements OnInit {
     this.commonService.loadComponent('/login', null)
   }
 
-  isAllowed(index:number){
-    console.log(index)
-    console.log(this.allowedList[index]);
+  isAllowed(index:number){debugger
     let allowed:boolean = false;
     let roleAction = this.commonService.getActionList() 
     for(let idx=0;idx<roleAction.length;idx++){

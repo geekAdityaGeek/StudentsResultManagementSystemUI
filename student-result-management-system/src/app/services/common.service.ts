@@ -10,6 +10,7 @@ import { MarksVO } from 'src/vo/marksVO';
 import { ObjectionVO } from 'src/vo/objectionVO';
 import jwt_decode from "jwt-decode";
 import { Actions } from 'src/enums/actionEnums';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,11 @@ export class CommonService {
       environment.apiConfig.base_url + "moderator/getListSubjCodeName"
     );
   }
+
+  getEnumInverseMap(Values){
+    return Object.keys(Values).map(key => Values[key]).filter(k => !(parseInt(k) >= 0))
+  }
+
 
   getYears() {
     let years = []
@@ -151,10 +157,7 @@ export class CommonService {
 
   getActionList(){
     let allowedOperations = JSON.parse(localStorage.getItem("allowedOperation"))
-    let operation: Actions[] = [];
-    for(let idx=0;idx<allowedOperations.length;idx++){
-      operation.push(Actions[allowedOperations[idx]])
-    }
+    let operation = allowedOperations
     return operation
   }
 

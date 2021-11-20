@@ -11,9 +11,9 @@
             <custom-nav-button *ngIf = "isAllowed(idx)" 
             [btnLabel]="btnInfo.label"
             [componentUrl]="btnInfo.url"></custom-nav-button>
-          </li>
+          </li>          
         </ul>
-        <button class="btn btn-light" (click)="logout()" style="float: right;">Logout</button>    
+        <button class="btn btn-light mr" (click)="logout()" style="float: right;">Logout</button>
       </div>
     
       <ng-template #notLoggedInNav>
