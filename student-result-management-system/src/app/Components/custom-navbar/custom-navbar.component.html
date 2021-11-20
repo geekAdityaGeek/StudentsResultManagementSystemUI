@@ -5,16 +5,24 @@
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-          <custom-nav-button *ngFor="let btnInfo of navBtnLeftList" 
+      <div *ngIf="isLoggedIn(); else notLoggedInNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active" *ngFor="let btnInfo of navBtnLeftListForLoggedIn; let idx=index">
+            <custom-nav-button *ngIf = "isAllowed(idx)" 
+            [btnLabel]="btnInfo.label"
+            [componentUrl]="btnInfo.url"></custom-nav-button>
+          </li>
+        </ul>
+        <button class="btn btn-light" (click)="logout()" style="float: right;">Logout</button>    
+      </div>
+    
+      <ng-template #notLoggedInNav>
+        <ul class="navbar-nav mr-auto">
+          <custom-nav-button *ngFor="let btnInfo of navBtnLeftListForNotLoggedIn" 
           [btnLabel]="btnInfo.label"
           [componentUrl]="btnInfo.url"></custom-nav-button>
-      </ul>
-      <ul class="navbar-nav ml-auto" >
-        <custom-nav-button style="float: right;" *ngFor="let btnInfo of navBtnRightList" 
-        [btnLabel]="btnInfo.label"
-        [componentUrl]="btnInfo.url"></custom-nav-button>
-      </ul>
-
+        </ul>
+      </ng-template>
+      
     </div>
   </nav>

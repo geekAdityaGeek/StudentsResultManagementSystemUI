@@ -9,17 +9,38 @@ export class ObjectionService {
 
   constructor(private http: HttpClient) { }
 
-  getObjectionListToView(extId: string){
+  /**
+  getObjectionListToView(extId: string, currPage: Number, itemsPerPage: Number, objectionFetchUrl:string ){
     let parameters = new HttpParams()
     .append("extId", extId)
-    return this.http.get(environment.apiConfig.base_url+"objection/studentObjections", {params: parameters})
+    .append("page", currPage.toString())
+    .append("items", itemsPerPage.toString())
+    return this.http.get(environment.apiConfig.base_url+objectionFetchUrl, {params: parameters})
   }
 
+  
   getObjectionListToOperate(extId: string, currPage: Number, itemsPerPage: Number){debugger
     let parameters = new HttpParams()
     .append("extId", extId)
     .append("page", currPage.toString())
     .append("items", itemsPerPage.toString())
     return this.http.get(environment.apiConfig.base_url+"objection/modObjections", {params: parameters})
+  }
+
+  getNextPage(currPage: number, itemsPerPage:number, extId: string, url:string){
+    let parameters = new HttpParams()
+    .append("extId", extId)
+    .append("page", currPage.toString())
+    .append("items", itemsPerPage.toString())
+    return this.http.get(environment.apiConfig.base_url+url, {params: parameters})
+  }
+   */
+
+  fetchObjection(extId: string, currPage: Number, itemsPerPage: Number, objectionFetchUrl:string ){
+    let parameters = new HttpParams()
+    .append("extId", extId)
+    .append("page", currPage.toString())
+    .append("items", itemsPerPage.toString())
+    return this.http.get(environment.apiConfig.base_url+objectionFetchUrl, {params: parameters})
   }
 }

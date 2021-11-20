@@ -8,8 +8,8 @@ export class StudentObjectionConf implements ObjectionRoleConf {
     constructor(private commonService: CommonService, private objectionService: ObjectionService){}
 
 
-    getObjectionData(extId: string) {
-        return this.objectionService.getObjectionListToView(extId);
+    getObjectionData(extId: string, currPage:number, itemsPerPage:number) {
+        return this.objectionService.fetchObjection(extId, currPage, itemsPerPage, this.getViewObjectionUrl());
     }
 
     processOperatedData(changedData: any): void {}
@@ -22,7 +22,9 @@ export class StudentObjectionConf implements ObjectionRoleConf {
 
     getRequestDataForOperation(){ }
 
-    public getOperationUrl(){ }
-    
+    getOperationUrl(){ }  
 
+    public getViewObjectionUrl(){
+        return "objection/studentObjections"
+    }
 }

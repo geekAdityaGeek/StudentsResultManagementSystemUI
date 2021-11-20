@@ -13,7 +13,7 @@ export class ModeratorObjectionConf implements ObjectionRoleConf{
 
 
     getObjectionData(extId: string, currPage: Number, itemsPerPage: Number) {
-        return this.objectionService.getObjectionListToOperate(extId, currPage, itemsPerPage);
+        return this.objectionService.fetchObjection(extId, currPage, itemsPerPage,this.getViewObjectionUrl());
     }
     
     getAllowedOperation(): RowOperation[] {
@@ -46,6 +46,10 @@ export class ModeratorObjectionConf implements ObjectionRoleConf{
 
     public getOperationUrl(){
         return "objection/resolveObjection";
+    }
+
+    public getViewObjectionUrl(){
+        return "objection/modObjections"
     }
 
 }

@@ -2,13 +2,14 @@ import { query } from '@angular/animations';
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from 'src/app/services/common.service';
 import { QueryService } from 'src/app/services/query.service';
 import { ResultService } from 'src/app/services/result.service';
 import { environment } from 'src/environments/environment';
 import { QueryVO } from 'src/vo/queryVO';
-
+import jwt_decode from "jwt-decode";
 
 export enum queryFormFeilds{
   ROLL_NUMBER = "rollNumber",
@@ -35,14 +36,21 @@ export class QueryFormComponent implements OnInit {
   subjectCodes: string[] = []
   termList = []
   yearList = []
+  decoded: { sub: string; role: string; exp: number; iat: number } = null;
+  
   
   constructor(private commonService: CommonService,
     private toastrService: ToastrService,
     private queryService: QueryService,
-    private resultService: ResultService
+    private resultService: ResultService,
+    private cookieService: CookieService
     ) { }
 
   ngOnInit() {
+    if (this.cookieService.check("jwt")) {
+      this.decoded = jwt_decode(this.cookieService.get("jwt"));
+    }
+    
     this.queryForm = new FormGroup({
       rollNumber: new FormControl('', []),
       term: new FormControl('', []),
@@ -104,6 +112,18 @@ export class QueryFormComponent implements OnInit {
       )
   }
   
+  fixRollNumber(){
+    this.queryForm.get("rollNumber").setValue(this.decoded['sub'])
+  }
+
+
+  isDisabled(){debugger
+    let disabled = this.decoded['role'] === 'student';
+    if (disabled){
+      this.fixRollNumber()
+    }
+    return disabled;    
+  }
 
 
 

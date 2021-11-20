@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { UploadService } from "./../services/upload.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { CommonService } from "../services/common.service";
+import { Actions } from "src/enums/actionEnums";
 
 @Component({
   selector: "app-upload",
@@ -155,5 +156,15 @@ export class UploadComponent implements OnInit {
         this.toastrService.error(error.error.message, "Failed");
       }
     );
+  }
+
+  isBulkUploadAllowed(){
+    let allowedOperation = this.commonService.getActionList()
+    return allowedOperation.includes(Actions.BULK_UPLOAD)
+  }
+
+  isSingleUploadAllowed(){
+    let allowedOperation = this.commonService.getActionList()
+    return allowedOperation.includes(Actions.UPLOAD)
   }
 }

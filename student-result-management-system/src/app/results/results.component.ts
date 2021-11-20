@@ -44,6 +44,8 @@ export class ResultsComponent implements OnInit {
   currPage: number = 0;
   configurer: ResultRoleConf;
   totalPage: number;
+  decoded: { sub: string; role: string; exp: number; iat: number } = null;
+    
 
   constructor(
     private router: Router,
@@ -54,19 +56,18 @@ export class ResultsComponent implements OnInit {
     private injector: Injector,
     private cookieService: CookieService
   ) {
-    var decoded: { sub: string; role: string; exp: number; iat: number } = null;
-    console.log(this.cookieService.check("jwt"));
     if (this.cookieService.check("jwt")) {
-      decoded = jwt_decode(this.cookieService.get("jwt"));
+      this.decoded = jwt_decode(this.cookieService.get("jwt"));
     }
-    if (decoded.role === "STUDENT") {
-      console.log("student");
+    if (this.decoded.role === "student") {
       this.configurer = new StudentResultConf(this.commonService);
     } else {
-      console.log("mod");
       this.configurer = new ModeratorResultConf(this.commonService);
     }
     let responseData = <any>this.router.getCurrentNavigation().extras.state;
+    if(!responseData){
+      this.commonService.loadComponent("home", null)
+    }
     let data = responseData["marks"];
     this.resultData = this.commonService.mapToMarksData(data["marksVOList"]);
     this.totalPage = data["totalPage"];
@@ -139,12 +140,16 @@ export class ResultsComponent implements OnInit {
       )
       .subscribe(
         (data) => {
+          this.totalPage = data["totalPage"];
+          if(this.totalPage == 0){
+            this.currPage = -1;
+          }
           this.resultData = this.commonService.mapToMarksData(
             data["marksVOList"]
           );
           this.convertToResultArray();
           this.currPage -= 1;
-          this.totalPage = data["totalPage"];
+          
         },
         (error) => {
           debugger;
@@ -162,7 +167,10 @@ export class ResultsComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          debugger;
+          this.totalPage = data["totalPage"];
+          if(this.totalPage == 0){
+            this.currPage = +1;
+          }
           this.resultData = this.commonService.mapToMarksData(
             data["marksVOList"]
           );

@@ -5,6 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { ToastrService } from "ngx-toastr";
 import { LoginCredentialsVO } from "src/vo/LoginCredentialsVO.model";
 import { AuthenticationService } from "../services/authentication.service";
+import { CommonService } from "../services/common.service";
 
 @Component({
   selector: "app-login",
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
@@ -36,9 +38,15 @@ export class LoginComponent implements OnInit {
     this.authenticationService.authenticate(this.loginCredentials).subscribe(
       (data: any) => {
         var jwt: string = data.message;
-        // console.log(data);
         this.cookieService.set("jwt", jwt, 1, "/", "", true);
-        this.toastrService.success("Login Successful!");
+        let decoded = this.commonService.getDecodedToken()
+        this.commonService.getUserAllowedAction(decoded['role']).subscribe(
+          data => {
+            localStorage.setItem('allowedOperation', JSON.stringify(data));
+          },
+          error => {
+            this.toastrService.error("Please reload the page or try after some time", "FAILED");
+          })              
       },
       (error: HttpErrorResponse) => {
         console.log(error);

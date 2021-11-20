@@ -14,4 +14,5 @@ export class HomeService {
     return this.http.get(environment.apiConfig.base_url+"user/details", 
           {params:params});
   }
+
 }

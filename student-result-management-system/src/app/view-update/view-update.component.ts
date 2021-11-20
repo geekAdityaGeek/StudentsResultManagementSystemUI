@@ -2,6 +2,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { Actions } from "src/enums/actionEnums";
+import { CommonService } from "../services/common.service";
 import { UploadService } from "../services/upload.service";
 import { UpdateForm } from "./update.form";
 
@@ -16,7 +18,8 @@ export class ViewUpdateComponent implements OnInit {
 
   constructor(
     private toastrService: ToastrService,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
@@ -39,5 +42,16 @@ export class ViewUpdateComponent implements OnInit {
         this.toastrService.error(error.error.message, "Failed");
       }
     );
+  }
+
+
+  isQueryAllowed(){
+    let allowedOperation = this.commonService.getActionList()
+    return allowedOperation.includes(Actions.VIEW)
+  }
+
+  isBulkUpdateAllowed(){
+    let allowedOperation = this.commonService.getActionList()
+    return allowedOperation.includes(Actions.BULK_UPDATE)
   }
 }

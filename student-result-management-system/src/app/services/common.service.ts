@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { RowOperation } from 'src/enums/rowOperation';
 import { environment } from 'src/environments/environment';
 import { MarksVO } from 'src/vo/marksVO';
 import { ObjectionVO } from 'src/vo/objectionVO';
+import jwt_decode from "jwt-decode";
+import { Actions } from 'src/enums/actionEnums';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,8 @@ export class CommonService {
 
   constructor(private http: HttpClient, 
     private toastrService: ToastrService,
-    private router: Router) {}
+    private router: Router, 
+    private cookieService: CookieService) {}
 
   fetchTerms(): Observable<any> {
     return this.http.get(
@@ -132,5 +136,30 @@ export class CommonService {
     return objection;
   }
 
+
+  getDecodedToken(){
+    var decoded: { sub: string; role: string; exp: number; iat: number } = null;
+    if (this.cookieService.check("jwt")) {
+      decoded = jwt_decode(this.cookieService.get("jwt"));
+    }
+    return decoded;
+  }
+
+  getIntersection(list1,list2){
+    return  list1.filter(x => list2.includes(x));
+  }
+
+  getActionList(){
+    let allowedOperations = JSON.parse(localStorage.getItem("allowedOperation"))
+    let operation: Actions[] = [];
+    for(let idx=0;idx<allowedOperations.length;idx++){
+      operation.push(Actions[allowedOperations[idx]])
+    }
+    return operation
+  }
+
+  getUserAllowedAction(role: string){
+    return this.http.get(environment.apiConfig.base_url+"actionsByRole/"+role)
+  }
 
 }

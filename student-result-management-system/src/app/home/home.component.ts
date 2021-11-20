@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { UserDetailsVO } from 'src/vo/userDetailsVO.model';
 import { HomeService } from '../services/home.service';
+import jwt_decode from "jwt-decode";
+import { CommonService } from '../services/common.service';
+import { Actions } from 'src/enums/actionEnums';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +20,8 @@ export class HomeComponent implements OnInit {
   userDetail : UserDetailsVO ;
   
   constructor(private homeService: HomeService,
-    private toastrService: ToastrService) { 
+    private toastrService: ToastrService,
+    private commonService: CommonService) { 
       this.basicDetailForm = new FormGroup({
         name : new FormControl("", []),
         extId : new FormControl("", []),
@@ -28,15 +33,14 @@ export class HomeComponent implements OnInit {
       })
      }
 
-  ngOnInit() {
-    
-    this.homeService.getUserDetails("MT2020093").subscribe(
+  ngOnInit() {    
+    let decoded = this.commonService.getDecodedToken()
+    this.homeService.getUserDetails(decoded['sub']).subscribe(
       data => {
         this.userDetail = new UserDetailsVO(
           data['name'], data['gender'], data['contactno'], data['role'],
           data['extId'], data['address'], data['dob'], data['email'], null
         )
-        console.log(data)
         this.basicDetailForm = new FormGroup({
           name : new FormControl(this.userDetail.getName(), []),
           extId : new FormControl(this.userDetail.getExtId(), []),
@@ -48,11 +52,15 @@ export class HomeComponent implements OnInit {
         })
       },
       error => {
-        this.toastrService.error(error.error)
+        this.toastrService.error(error.error, "FAILED")
       }
     );    
   }
 
 
+  isHomeAllowed(){
+    let allowedOperation = this.commonService.getActionList()
+    return allowedOperation.includes(Actions.HOME)
+  }
 
 }
