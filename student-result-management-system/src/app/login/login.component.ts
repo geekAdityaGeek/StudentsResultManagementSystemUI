@@ -56,6 +56,7 @@ export class LoginComponent implements OnInit {
         console.log(error);
         this.toastrService.error("Login Failed!");
         this.router.navigateByUrl("home");
+        localStorage.clear();
       }
     );
   }
