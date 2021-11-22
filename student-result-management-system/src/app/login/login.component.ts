@@ -5,7 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { ToastrService } from "ngx-toastr";
 import { LoginCredentialsVO } from "src/vo/LoginCredentialsVO.model";
 import { AuthenticationService } from "../services/authentication.service";
-
+import { Router } from "@angular/router";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router:Router
   ) {}
 
   ngOnInit() {
@@ -39,10 +40,12 @@ export class LoginComponent implements OnInit {
         // console.log(data);
         this.cookieService.set("jwt", jwt, 1, "/", "", true);
         this.toastrService.success("Login Successful!");
+        this.router.navigateByUrl("home");
       },
       (error: HttpErrorResponse) => {
         console.log(error);
         this.toastrService.error("Login Failed!");
+        this.router.navigateByUrl("home");
       }
     );
   }

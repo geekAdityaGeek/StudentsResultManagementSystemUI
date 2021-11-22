@@ -31,8 +31,8 @@ export class HttpCalIInterceptor implements HttpInterceptor {
     }
     console.log(new Date().getTime());
     var time = new Date().getTime();
-    if (decoded == null || decoded.exp > time)
-      this.authenticationService.logout();
+    // if (decoded == null || decoded.exp > time)
+    //   this.authenticationService.logout();
     if (
       request.url != environment.apiConfig.base_url + "register" &&
       request.url != environment.apiConfig.base_url + "authenticate" && 
