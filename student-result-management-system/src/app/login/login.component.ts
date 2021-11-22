@@ -5,6 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { ToastrService } from "ngx-toastr";
 import { LoginCredentialsVO } from "src/vo/LoginCredentialsVO.model";
 import { AuthenticationService } from "../services/authentication.service";
+import { Router } from "@angular/router";
 import { CommonService } from "../services/common.service";
 
 @Component({
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
     private cookieService: CookieService,
+    private router:Router,
     private commonService: CommonService
   ) {}
 
@@ -39,10 +41,12 @@ export class LoginComponent implements OnInit {
       (data: any) => {
         var jwt: string = data.message;
         this.cookieService.set("jwt", jwt, 1, "/", "", true);
+        this.toastrService.success("Login Successful!");
         let decoded = this.commonService.getDecodedToken()
         this.commonService.getUserAllowedAction(decoded['role']).subscribe(
           data => {
             localStorage.setItem('allowedOperation', JSON.stringify(data));
+            this.router.navigateByUrl("home");
           },
           error => {
             this.toastrService.error("Please reload the page or try after some time", "FAILED");
@@ -51,6 +55,8 @@ export class LoginComponent implements OnInit {
       (error: HttpErrorResponse) => {
         console.log(error);
         this.toastrService.error("Login Failed!");
+        this.router.navigateByUrl("home");
+        localStorage.clear();
       }
     );
   }
