@@ -75,11 +75,12 @@ import { HttpCalIInterceptor } from './httpinterceptor/http.interceptor';
     HttpClientModule,
     FormsModule
   ],
-  providers: [CookieService,{
+  providers: [    
+    CookieService,{
     provide: HTTP_INTERCEPTORS,
     useClass: HttpCalIInterceptor,
-    multi: true
-  }],
+    multi: true}
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

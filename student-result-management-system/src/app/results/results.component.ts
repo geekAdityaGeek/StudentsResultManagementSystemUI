@@ -1,158 +1,187 @@
-import { HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { RowOperation } from 'src/enums/rowOperation';
-import { environment } from 'src/environments/environment';
-import { MarksVO } from 'src/vo/marksVO';
-import { QueryVO } from 'src/vo/queryVO';
-import { CommonService } from '../services/common.service';
-import { ResultService } from '../services/result.service';
+import { Component, Injector, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { ModeratorResultConf } from "src/configurations/moderatorResultConf";
+import { ResultRoleConf } from "src/configurations/ResultRoleConf";
+import { StudentResultConf } from "src/configurations/studentResultConf";
+import { RowOperation } from "src/enums/rowOperation";
+import { environment } from "src/environments/environment";
+import { MarksVO } from "src/vo/marksVO";
+import { QueryVO } from "src/vo/queryVO";
+import { CommonService } from "../services/common.service";
+import { ResultService } from "../services/result.service";
+import { CookieService } from "ngx-cookie-service";
+import jwt_decode from "jwt-decode";
 
 @Component({
-  selector: 'results',
-  templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css']
+  selector: "results",
+  templateUrl: "./results.component.html",
+  styleUrls: ["./results.component.css"],
 })
 export class ResultsComponent implements OnInit {
-
-  columnHeading:string[] = ["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE"]
-  colWidth:string[] = ["15%","30%","10%","10%","10%", "10%", "10%"]
-  resultData:MarksVO[]
-  arrayResultData : string[][];
-  backBtnLabel:string = "Back"
-  backUrl:string = "view-update"
-  submitBtnLabel:string = "Submit"
-  userConf:string = "user-conf"
-  otherPageResult:string = "results"
-  prevPageBtnLabel:string = "Previous"
-  nextPageBtnLabel:string = "Next"
-  operationList:RowOperation[] = [];
-  updatedMarks:MarksVO[] = [];
-  deletedMarks:MarksVO[] = [];
+  columnHeading: string[] = [
+    "ROLL NUMBER",
+    "SUBJECT",
+    "YEAR",
+    "TERM",
+    "MARKS",
+    "TOTAL MARKS",
+    "GRADE",
+  ];
+  colWidth: string[] = ["15%", "30%", "10%", "10%", "10%", "10%", "10%"];
+  disabledInput: boolean[] = [true, true, true, true, false, false, false];
+  resultData: MarksVO[];
+  arrayResultData: string[][];
+  backBtnLabel: string = "Back";
+  backUrl: string = "view-update";
+  submitBtnLabel: string = "Submit";
+  userConf: string = "user-conf";
+  otherPageResult: string = "results";
+  prevPageBtnLabel: string = "Previous";
+  nextPageBtnLabel: string = "Next";
+  operationList: RowOperation[] = [];
   queryVO: QueryVO;
-  currPage:number = 0;
-  
-  
+  currPage: number = 0;
+  configurer: ResultRoleConf;
+  totalPage: number;
+  decoded: { sub: string; role: string; exp: number; iat: number } = null;
+    
 
-  constructor(private router:Router, 
-    private activatedRoute:ActivatedRoute, 
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private resultService: ResultService,
-    private toastrService: ToastrService
-    ) { 
-
-    let responseData = <any>this.router.getCurrentNavigation().extras.state
-    this.resultData = this.commonService.mapToMarksData(responseData['marks']);
-    this.queryVO = <QueryVO>responseData['query'] 
-    if(this.resultData == undefined)  
-      this.router.navigateByUrl('home')
-    this.convertToResultArray()
-    this.allowedOperation()
-    
+    private toastrService: ToastrService,
+    private injector: Injector,
+    private cookieService: CookieService
+  ) {
+    if (this.cookieService.check("jwt")) {
+      this.decoded = jwt_decode(this.cookieService.get("jwt"));
+    }
+    if (this.decoded.role === "student") {
+      this.configurer = new StudentResultConf(this.commonService);
+    } else {
+      this.configurer = new ModeratorResultConf(this.commonService);
+    }
+    let responseData = <any>this.router.getCurrentNavigation().extras.state;
+    if(!responseData){
+      this.commonService.loadComponent("home", null)
+    }
+    let data = responseData["marks"];
+    this.resultData = this.commonService.mapToMarksData(data["marksVOList"]);
+    this.totalPage = data["totalPage"];
+    this.currPage = data["currentPage"];
+    this.queryVO = <QueryVO>responseData["query"];
+    if (this.resultData == undefined) this.router.navigateByUrl("home");
+    this.convertToResultArray();
+    this.operationList = this.configurer.getAllowedOperation();
   }
 
-  convertToResultArray(){
+  convertToResultArray() {
     this.arrayResultData = [];
-    for(let i=0;i<this.resultData.length;i++){
+    console.log(this.resultData);
+    for (let i = 0; i < this.resultData.length; i++) {
       this.arrayResultData.push([]);
-      console.log(typeof this.resultData[i])
-      this.arrayResultData[i].push(this.resultData[i].getRollNo())
-      this.arrayResultData[i].push(this.resultData[i].getSubjectCode()
-                  +":"+this.resultData[i].getSubjectName())
-      this.arrayResultData[i].push(this.resultData[i].getYear().toString())
-      this.arrayResultData[i].push(this.resultData[i].getTerm().toString())
-      this.arrayResultData[i].push(this.resultData[i].getMarksObtained().toString())
-      this.arrayResultData[i].push(this.resultData[i].getTotalMarks().toString())
-      this.arrayResultData[i].push(this.resultData[i].getGrade())      
+      console.log(typeof this.resultData[i]);
+      this.arrayResultData[i].push(this.resultData[i].getRollNo());
+      this.arrayResultData[i].push(
+        this.resultData[i].getSubjectCode() +
+          ":" +
+          this.resultData[i].getSubjectName()
+      );
+      this.arrayResultData[i].push(this.resultData[i].getYear().toString());
+      this.arrayResultData[i].push(this.resultData[i].getTerm().toString());
+      this.arrayResultData[i].push(
+        this.resultData[i].getMarksObtained().toString()
+      );
+      this.arrayResultData[i].push(
+        this.resultData[i].getTotalMarks().toString()
+      );
+      this.arrayResultData[i].push(this.resultData[i].getGrade());
+      this.arrayResultData[i].push(RowOperation.NONE);
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  allowedOperation(){
-    this.operationList.push(RowOperation.UPDATE);
-    this.operationList.push(RowOperation.DELETE);
-  }
-
-  updateData(changedData:any){
-    this.updatedMarks = [];
-    this.deletedMarks = [];
-    for(let idx=0; idx<changedData.length; idx++){
-      let subjectInfo = changedData[idx][1].split(":")
-      let marks = new MarksVO(
-        changedData[idx][0],
-        subjectInfo[0],
-        subjectInfo[1],
-        changedData[idx][4],
-        changedData[idx][5],
-        changedData[idx][6],
-        changedData[idx][2],
-        changedData[idx][3],
-        changedData[idx][7],        
-      );
-      if(marks.getOperation() == RowOperation.UPDATE){
-        this.updatedMarks.push(marks)
-      }else if(marks.getOperation() == RowOperation.DELETE){
-        this.deletedMarks.push(marks)
-      }
-    }  
+  operatedDataProcessing(operatedData: any) {
+    this.configurer.processOperatedData(operatedData);
   }
 
   dataExtractor = () => {
     let finalData = {};
-    finalData['columnHeading']=["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "OPERATION"]
-    finalData['colWidth'] = ["15%","30%","10%","10%","10%", "10%", "10%"]
-    finalData['savingUrl'] = "moderator/updateMarks"
-    
-    let requestData: MarksVO[] = [];
-    for(let idx=0;idx<this.updatedMarks.length;idx++){
-      requestData.push(this.updatedMarks[idx])
-    }
-    for(let idx=0;idx<this.deletedMarks.length;idx++){
-      requestData.push(this.deletedMarks[idx])
-    }
+    finalData["columnHeading"] = [
+      "ROLL NUMBER",
+      "SUBJECT",
+      "YEAR",
+      "TERM",
+      "MARKS",
+      "TOTAL MARKS",
+      "GRADE",
+      "OPERATION",
+    ];
+    finalData["colWidth"] = ["15%", "30%", "10%", "10%", "10%", "10%", "10%"];
+    finalData["savingUrl"] = this.configurer.getOperationUrl();
+    finalData["data"] = this.configurer.getRequestDataForOperation();
+    return finalData;
+  };
 
-    finalData['data'] = requestData;
-    return finalData
+  getDownloadLink() {
+    return this.configurer.getResultDownloadLink(this.queryVO);
   }
 
-  getDownloadLink(){
-    let params = new HttpParams()
-    .append("rollNumber", this.queryVO["rollNumber"])
-    .append("subjectode", this.queryVO["subjectCode"])
-    .append("term", this.queryVO["term"].toString())
-    .append("year", this.queryVO["year"].toString())
-    
-    return environment.apiConfig.base_url + "download/result/pdf?"+params.toString()
+  previousPage() {
+    this.resultService
+      .getPreviousPage(
+        this.currPage,
+        environment.apiConfig.items_per_page,
+        this.queryVO
+      )
+      .subscribe(
+        (data) => {
+          this.totalPage = data["totalPage"];
+          if(this.totalPage == 0){
+            this.currPage = -1;
+          }
+          this.resultData = this.commonService.mapToMarksData(
+            data["marksVOList"]
+          );
+          this.convertToResultArray();
+          this.currPage -= 1;
+          
+        },
+        (error) => {
+          debugger;
+          this.toastrService.warning("This is the first page!!");
+        }
+      );
   }
 
-  previousPage(){
-    this.resultService.getPreviousPage(this.currPage, environment.apiConfig.items_per_page, this.queryVO).subscribe(
-      (data) => {
-        this.resultData = this.commonService.mapToMarksData(data);
-        this.convertToResultArray();  
-        this.currPage-=1
-        console.log(this.currPage)
-      },
-      (error) => {
-        this.toastrService.error(error.error.message, "Failed");
-      }
-    )
+  nextPage() {
+    this.resultService
+      .getNextPage(
+        this.currPage,
+        environment.apiConfig.items_per_page,
+        this.queryVO
+      )
+      .subscribe(
+        (data) => {
+          this.totalPage = data["totalPage"];
+          if(this.totalPage == 0){
+            this.currPage = +1;
+          }
+          this.resultData = this.commonService.mapToMarksData(
+            data["marksVOList"]
+          );
+          this.convertToResultArray();
+          this.currPage += 1;
+          this.totalPage = data["totalPage"];
+        },
+        (error) => {
+          debugger;
+          this.toastrService.warning("No More Pages Present!!");
+        }
+      );
   }
-
-  nextPage(){
-    this.resultService.getNextPage(this.currPage, environment.apiConfig.items_per_page, this.queryVO).subscribe(
-      (data) => {
-        this.resultData = this.commonService.mapToMarksData(data);
-        this.convertToResultArray();  
-        this.currPage+=1
-        console.log(this.currPage)
-      },
-      (error) => {
-        this.toastrService.error(error.error.message, "Failed");
-      }
-    )
-  }
-
 }

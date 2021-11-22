@@ -15,8 +15,8 @@ export class ConfirmationComponent implements OnInit {
 
   resultData;
   arrayResultData:string[][];
-  columnHeading:string[] = []//
-  colWidth:string[] = []//
+  columnHeading:string[] = []
+  colWidth:string[] = []
   backBtnLabel:string = "Cancel"
   backUrl:string = "home"
   submitBtnLabel:string = "Submit"
@@ -38,13 +38,13 @@ export class ConfirmationComponent implements OnInit {
     if(passedData == undefined)  
       this.router.navigateByUrl('home')
   
-
     this.columnHeading = passedData['columnHeading']
     this.colWidth = passedData['colWidth']
     this.resultData = passedData['data']
     this.savingUrl = passedData['savingUrl']
-
     
+    console.log(this.resultData);
+
     this.convertToResultArray()
   }
 
@@ -60,10 +60,13 @@ export class ConfirmationComponent implements OnInit {
       this.arrayResultData[i].push(this.resultData[i]['marksObtained'])
       this.arrayResultData[i].push(this.resultData[i]['totalMarks'])
       this.arrayResultData[i].push(this.resultData[i]['grade']) 
-      if(this.resultData[i]['comment'])
-        this.arrayResultData[i].push(this.resultData[i]['comment'])
+      debugger
+      if(this.resultData[i]['comments'])
+        this.arrayResultData[i].push(this.resultData[i]['comments'])
+      this.arrayResultData[i].push(this.resultData[i]['operation'])   
       this.arrayResultData[i].push(this.resultData[i]['operation'])        
     }
+    console.log(this.arrayResultData)
   }
 
   ngOnInit() {

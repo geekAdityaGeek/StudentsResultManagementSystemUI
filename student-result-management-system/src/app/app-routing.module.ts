@@ -11,7 +11,7 @@ import { ViewUpdateComponent } from './view-update/view-update.component';
 
 
 const routes: Routes = [
-  {path: '',   redirectTo: 'home', pathMatch: 'full'},
+  {path: '',   redirectTo: 'login', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'upload', component: UploadComponent},
   {path: 'view-update', component: ViewUpdateComponent},

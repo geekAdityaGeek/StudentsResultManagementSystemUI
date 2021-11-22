@@ -6,6 +6,8 @@ import { ToastrService } from "ngx-toastr";
 import { LoginCredentialsVO } from "src/vo/LoginCredentialsVO.model";
 import { AuthenticationService } from "../services/authentication.service";
 import { Router } from "@angular/router";
+import { CommonService } from "../services/common.service";
+
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -18,7 +20,8 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
     private cookieService: CookieService,
-    private router:Router
+    private router:Router,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
@@ -37,10 +40,17 @@ export class LoginComponent implements OnInit {
     this.authenticationService.authenticate(this.loginCredentials).subscribe(
       (data: any) => {
         var jwt: string = data.message;
-        // console.log(data);
         this.cookieService.set("jwt", jwt, 1, "/", "", true);
         this.toastrService.success("Login Successful!");
-        this.router.navigateByUrl("home");
+        let decoded = this.commonService.getDecodedToken()
+        this.commonService.getUserAllowedAction(decoded['role']).subscribe(
+          data => {
+            localStorage.setItem('allowedOperation', JSON.stringify(data));
+            this.router.navigateByUrl("home");
+          },
+          error => {
+            this.toastrService.error("Please reload the page or try after some time", "FAILED");
+          })              
       },
       (error: HttpErrorResponse) => {
         console.log(error);

@@ -1,6 +1,6 @@
-<div class="card">
+<div class="card" *ngIf="isSingleUploadAllowed()">
   <div class="card-body">
-    <div class="card-title" style="color: blue"><b>SINGLE UPLOAD</b></div>
+    <h5 class="card-title" style="color: blue"><b>SINGLE UPLOAD</b></h5>
     <hr />
     <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
@@ -186,7 +186,7 @@
   </div>
 </div>
 
-<div class="card" style="margin-top: 5%">
+<div class="card" style="margin-top: 5%" *ngIf="isBulkUploadAllowed()">
   <div class="card-body">
     <div class="card-title" style="color: blue"><b>BULK UPLOAD</b></div>
     <hr />

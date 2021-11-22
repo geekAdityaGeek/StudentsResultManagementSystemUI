@@ -10,7 +10,7 @@
                 class="form-control" 
                 id="queryRoll" 
                 formControlName="rollNumber"
-                placeholder="Roll Number">
+                placeholder="Roll Number" [readonly] = "isDisabled()">
               </div>
 
               <div class="form-group col-sm-6">
@@ -24,19 +24,17 @@
           <div class="form-row">
               <div class="form-group col-sm-6">
                 <label for="queryTerm">Term</label>
-                <input type="text" 
-                class="form-control" 
-                id="queryTerm" 
-                formControlName="term"
-                placeholder="Term">
+                <select class="form-control" id="queryTerm" 
+                  formControlName="term">
+                  <option *ngFor="let item of termList">{{ item }}</option>
+                </select>
               </div>
               <div class="form-group col-sm-6">
                 <label for="queryYear">Year</label>
-                <input type="text" 
-                class="form-control" 
-                id="queryYear" 
-                formControlName="year"
-                placeholder="Year">
+                <select class="form-control" id="queryYear" 
+                  formControlName="year">
+                  <option *ngFor="let item of yearList">{{ item }}</option>
+                </select>
               </div>
           </div>
           <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
