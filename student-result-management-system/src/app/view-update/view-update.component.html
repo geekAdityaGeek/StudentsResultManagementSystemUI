@@ -1,0 +1,54 @@
+<div *ngIf="isQueryAllowed()">
+  <query-form ></query-form>
+</div>
+
+<div class="row" *ngIf="isBulkUpdateAllowed()">
+  <div class="card" style="margin-top: 5%">
+    <div class="card-body">
+      <div class="card-title" style="color: blue"><b>BULK UPDATE</b></div>
+      <hr />
+      <form [formGroup]="bulkUpdateForm" (ngSubmit)="onUpdateSubmit()">
+        <div class="form-row">
+          <div class="form-group col-sm-12">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-3">
+                  <label
+                    for="fileUpload"
+                    style="color: rgb(0, 110, 255); margin-top: 2%"
+                    >SELECT FILE FOR BULK UPDATE</label
+                  >
+                </div>
+                <div class="col-sm-9">
+                  <input
+                    type="file"
+                    id="updateFile"
+                    class="form-control"
+                    (change)="onSelectFile($event)"
+                    formControlName="updateFile"
+                  />
+                  <span
+                    class="help-block"
+                    *ngIf="
+                      bulkUpdateForm.get('updateFile').invalid &&
+                      bulkUpdateForm.get('updateFile').touched
+                    "
+                    >*File is required</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!bulkUpdateForm.valid"
+          id="Apply"
+        >
+          BULK UPDATE
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

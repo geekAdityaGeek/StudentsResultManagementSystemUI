@@ -1,0 +1,33 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th [style.width]="getColWidth(colNo)" 
+            *ngFor="let colName of colTitle; let colNo = index">{{colName}}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let rowData of data; let rowNo = index" [style.backgroundColor]="getRowColor(rowNo)">
+            <ng-container *ngIf="!isNotFullyEditable && isUpdatable(rowNo); else nonEditableRow">
+                <td [style.width]="getColWidth(colNo)" 
+                *ngFor="let cellData of rowData | slice:0:rowData.length-1; let colNo = index;">
+                <input class="form-control"  type="text" [disabled]="isDisabledEditing(colNo)"
+                [(ngModel)]="modifiedData[rowNo][colNo]" (ngModelChange)="onChange()">                
+                </td>
+            </ng-container>
+            <ng-template #nonEditableRow>   
+                <td [style.width]="getColWidth(colNo)" 
+                *ngFor="let cellData of rowData | slice:0:rowData.length-1; let colNo = index">{{cellData}}</td>
+            </ng-template>
+
+            <!-- Buttons in the table -->
+            <td *ngIf="getOperationAllowed()">
+                <button *ngFor="let btn of allowedBtnList; let idx = index" 
+                (click)="btnClicked(rowNo, idx)" 
+                [class]="getBtnClass(idx)"
+                [style.opacity]="getOpacityStyle(rowNo, idx)">{{btn.label}}</button>                
+            </td>
+        </tr>
+        
+    </tbody>
+</table>

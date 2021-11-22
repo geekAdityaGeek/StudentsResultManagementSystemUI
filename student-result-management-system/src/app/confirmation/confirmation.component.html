@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">CONFIRMATION</h5>
+        <hr />
+        <custom-table [data]="arrayResultData" 
+        [colTitle]="columnHeading" 
+        [colWidth]="colWidth"
+        [isNotFullyEditable]="true"></custom-table>
+
+        
+        <button *ngIf="!opSuccess" class="btn btn-primary" (click)="cancelOperation()">Cancel</button>
+        <button *ngIf="!opSuccess" class="btn btn-primary" (click)="saveData()">Submit</button>
+        <button *ngIf="opSuccess" class="btn btn-success" (click)="doneOperation()">Done</button>
+        
+    </div>
+</div>

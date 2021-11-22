@@ -1,0 +1,46 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"> QUERY RESULTS </h5>
+        <hr />
+        <form [formGroup]="queryForm">
+          <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="queryRoll">Roll Number</label>
+                <input type="text" 
+                class="form-control" 
+                id="queryRoll" 
+                formControlName="rollNumber"
+                placeholder="Roll Number" [readonly] = "isDisabled()">
+              </div>
+
+              <div class="form-group col-sm-6">
+                  <label for="querySubject">Subject</label>
+                  <select class="form-control" id="querySubject" 
+                  formControlName="subjectCode">
+                  <option *ngFor="let item of subjectCodes">{{ item }}</option>
+                  </select>
+              </div>            
+          </div>
+          <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="queryTerm">Term</label>
+                <select class="form-control" id="queryTerm" 
+                  formControlName="term">
+                  <option *ngFor="let item of termList">{{ item }}</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="queryYear">Year</label>
+                <select class="form-control" id="queryYear" 
+                  formControlName="year">
+                  <option *ngFor="let item of yearList">{{ item }}</option>
+                </select>
+              </div>
+          </div>
+          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary" (click)="clearForm()">Clear</button>
+            <button type="submit" class="btn btn-primary" (click)="submitQuery()">Submit</button>
+        </div>
+        </form>        
+    </div>
+</div>

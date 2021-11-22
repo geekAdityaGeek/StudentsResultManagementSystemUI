@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">RESULTS</h5>
+        <hr />
+        
+        <a class="btn btn-success" [href]="getDownloadLink()" target="_blank">Download</a>
+        <div style="float: right;">
+            <label style="margin-right: 3px;font-weight: bolder;">{{currPage+1}} / {{totalPage}}</label>
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+            
+        </div>
+        <custom-table [data]="arrayResultData" 
+        [colTitle]="columnHeading"
+        [colWidth]="colWidth"
+        [disabledInputs]="disabledInput"
+        [operationAllowed]="operationList"
+        (changedDataEvent)="operatedDataProcessing($event)"></custom-table>
+
+        <page-transit-button [btnLabel]="backBtnLabel" 
+        [componentUrl]="backUrl"></page-transit-button>
+        <custom-submit-button [btnLabel]="submitBtnLabel" 
+        [componentUrl]="userConf"
+        [requestData]="dataExtractor()"></custom-submit-button>
+
+    </div>
+</div>
+        

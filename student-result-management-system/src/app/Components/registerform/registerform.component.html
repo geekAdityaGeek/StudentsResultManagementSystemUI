@@ -1,0 +1,210 @@
+<div class="container">
+  <div class="row">
+    <form [formGroup]="registerform" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="firstname">First Name</label>
+        <input
+          id="firstname"
+          type="text"
+          formControlName="firstname"
+          class="form-control"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('firstname').invalid &&
+            registerform.get('firstname').touched
+          "
+          >*Firstname is required</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input
+          id="lastname"
+          type="text"
+          formControlName="lastname"
+          class="form-control"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('lastname').invalid &&
+            registerform.get('lastname').touched
+          "
+          >*Lastname is required</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select class="form-control" id="gender" formControlName="gender">
+          <option>Female</option>
+          <option>Male</option>
+          <option>Others</option>
+        </select>
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('gender').invalid &&
+            registerform.get('gender').touched
+          "
+          >*Gender is required</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="contactno">Contact Number</label>
+        <input
+          type="text"
+          id="contactno"
+          class="form-control"
+          placeholder="+91"
+          formControlName="contactno"
+          maxlength="10"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('contactno').invalid &&
+            registerform.get('contactno').touched
+          "
+          >*Contact Number seems invalid</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select class="form-control" id="role" formControlName="role">
+          <option *ngFor="let Role of Roles" [value]="Role">{{ Role }}</option>
+        </select>
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('role').invalid && registerform.get('role').touched
+          "
+          >*Role is required</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="id">Identification Number</label>
+        <input
+          type="text"
+          id="id"
+          class="form-control"
+          placeholder="(x)xx-xxxx-xxx"
+          formControlName="id"
+          maxlength="11"
+        />
+        <span
+          class="help-block"
+          *ngIf="registerform.get('id').invalid && registerform.get('id').touched"
+          >*ID is invalid</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input
+          type="text"
+          id="address"
+          class="form-control"
+          formControlName="address"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('address').invalid &&
+            registerform.get('address').touched
+          "
+          >*Address cannot be empty</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="dateofbirth">Date of Birth</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            name="dp"
+            id="dateofbirth"
+            formControlName="dob"
+            ngbDatepicker
+            #d="ngbDatepicker"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary calendar"
+              (click)="d.toggle()"
+              type="button"
+            >
+              Pick
+            </button>
+          </div>
+        </div>
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('dob').invalid && registerform.get('dob').touched
+          "
+          >*DoB is required</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="use @iiitb.org email"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('email').invalid && registerform.get('email').touched
+          "
+          >*Not a valid email</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('password').invalid &&
+            registerform.get('password').touched
+          "
+          >*Password must be at least 8 characters with one Uppercase ,one
+          Lowercase, one Digit and one special symbol(!,@,#,$,%,^,&,*)</span
+        >
+      </div>
+      <div class="form-group" *ngIf="registerform.get('password').valid">
+        <label for="confirm">Confirm Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="confirm"
+          formControlName="confirmPassword"
+        />
+        <span
+          class="help-block"
+          *ngIf="
+            registerform.get('confirmPassword').touched &&
+            registerform.errors?.mismatch
+          "
+          >*Password not same</span
+        >
+      </div>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!registerform.valid"
+      >
+        Register
+      </button>
+      <button class="btn btn-danger" (click)="goHome()" style="float: right;">Cancel</button>
+    </form>
+  </div>
+</div>

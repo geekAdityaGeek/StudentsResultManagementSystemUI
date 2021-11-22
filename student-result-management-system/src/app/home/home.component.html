@@ -1,0 +1,64 @@
+<div class="card" *ngIf = "isHomeAllowed()">
+    <div class="card-body">
+        <h5 class="card-title">BASIC DETAILS</h5>
+        <hr />
+        <form [formGroup]="basicDetailForm">
+          <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="name">Name</label>
+                <input type="text" 
+                class="form-control" 
+                id="name" 
+                formControlName="name"
+                disabled>
+              </div>
+              <div class="form-group col-sm-6">
+                  <label for="extId">External Id</label>
+                  <input type="text" 
+                  class="form-control" 
+                  id="extId" 
+                  disabled
+                  formControlName="extId"/>
+              </div>            
+          </div>
+          <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="email">Email</label>
+                <input type="text" 
+                class="form-control" 
+                id="email" 
+                formControlName="email"
+                disabled>
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="contactNo">Contact Number</label>
+                <input type="text" 
+                class="form-control" 
+                id="contactNo" 
+                formControlName="contactNo"
+                disabled>
+              </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="dob">Date Of Birth</label>
+              <input type="text" 
+              class="form-control" 
+              id="dob" 
+              formControlName="dob"
+              disabled>
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="gender">Gender</label>
+              <input type="text" 
+              class="form-control" 
+              id="gender" 
+              formControlName="gender"
+              disabled>
+            </div>
+        </div>
+         
+        </form>        
+    </div>
+</div>
