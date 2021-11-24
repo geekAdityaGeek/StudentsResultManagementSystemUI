@@ -101,7 +101,7 @@ export class QueryFormComponent implements OnInit {
       this.queryForm.get("year").value
     );
 
-      debugger
+      
       this.resultService.getNextPage(-1, environment.apiConfig.items_per_page, query).subscribe(
         (data) => {
           this.commonService.loadComponent("/results", {'query':query, 'marks':data})
@@ -117,7 +117,7 @@ export class QueryFormComponent implements OnInit {
   }
 
 
-  isDisabled(){debugger
+  isDisabled(){
     let disabled = this.decoded['role'] === 'student';
     if (disabled){
       this.fixRollNumber()

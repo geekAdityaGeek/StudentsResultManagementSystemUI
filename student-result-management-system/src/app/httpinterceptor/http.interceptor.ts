@@ -31,11 +31,12 @@ export class HttpCalIInterceptor implements HttpInterceptor {
     }
     console.log(new Date().getTime());
     var time = new Date().getTime();
-    // if (decoded == null || decoded.exp > time)
-    //   this.authenticationService.logout();
+    // console.log(decoded.exp);
+    if (decoded != null && decoded.exp * 1000 < time)
+      this.authenticationService.logout();
     if (
       request.url != environment.apiConfig.base_url + "register" &&
-      request.url != environment.apiConfig.base_url + "authenticate" && 
+      request.url != environment.apiConfig.base_url + "authenticate" &&
       request.url != environment.apiConfig.base_url + "allRoles"
     ) {
       let modifiedurl = request.clone({
