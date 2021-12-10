@@ -84,11 +84,11 @@ export class QueryFormComponent implements OnInit {
     return queryData;
   }
 
-  submitQuery(){
+  submitQuery(){debugger
 
     let params = new HttpParams()
     .append("rollNumber", this.queryForm.get("rollNumber").value)
-    .append("subjectode", this.queryForm.get("subjectCode").value)
+    .append("subjectCode", this.queryForm.get("subjectCode").value.split(",")[0])
     .append("term", this.queryForm.get("term").value)
     .append("year", this.queryForm.get("year").value)
 
@@ -96,7 +96,7 @@ export class QueryFormComponent implements OnInit {
 
     let query = new QueryVO(
       this.queryForm.get("rollNumber").value,
-      this.queryForm.get("subjectCode").value,
+      this.queryForm.get("subjectCode").value.split(",")[0],
       null,
       this.queryForm.get("term").value,
       this.queryForm.get("year").value
@@ -126,6 +126,6 @@ export class QueryFormComponent implements OnInit {
     return disabled;    
   }
 
-
+  
 
 }

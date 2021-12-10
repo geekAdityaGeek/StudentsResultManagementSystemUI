@@ -17,7 +17,7 @@ export class ResultService {
     .append("page", (currPage+1).toString())
     .append("items", itemPerPage.toString())
     .append("rollNumber", queryVO.getRollNumber())
-    .append("subjectode", queryVO.getSubjectCode())
+    .append("subjectCode", queryVO.getSubjectCode())
     .append("term", queryVO.getTerm().toString())
     .append("year", queryVO.getYear().toString())
 
