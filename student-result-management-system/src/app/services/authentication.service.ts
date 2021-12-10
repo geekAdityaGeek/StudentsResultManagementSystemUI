@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { LoginCredentialsVO } from "src/vo/LoginCredentialsVO.model";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
+import { Urls } from "src/enums/UrlMap";
 @Injectable({
   providedIn: "root",
 })
@@ -21,14 +22,14 @@ export class AuthenticationService {
   }
   registerUser(userDetails: UserDetailsVO): Observable<any> {
     return this.http.post(
-      environment.apiConfig.base_url + "register",
+      Urls.REGISTER,
       userDetails,
       {}
     );
   }
   authenticate(loginCredentials: LoginCredentialsVO) {
     return this.http.post(
-      environment.apiConfig.base_url + "authenticate",
+      Urls.LOGIN,
       loginCredentials,
       {}
     );

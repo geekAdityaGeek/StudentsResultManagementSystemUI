@@ -11,6 +11,7 @@ import { CommonService } from '../services/common.service';
 import { ObjectionService } from '../services/objection.service';
 import jwt_decode from "jwt-decode";
 import { environment } from 'src/environments/environment';
+import { Role } from 'src/enums/roleEnums';
 
 @Component({
   selector: 'objections',
@@ -45,7 +46,7 @@ export class ObjectionsComponent implements OnInit {
       if (this.cookieService.check("jwt")) {
         this.decoded = jwt_decode(this.cookieService.get("jwt"));
       }
-      if (this.decoded.role === "STUDENT") {
+      if (this.decoded.role === Role.STUDENT) {
         this.configurer = new StudentObjectionConf(this.commonService, this.objectionService)
       } else {
         this.configurer = new ModeratorObjectionConf(this.commonService, this.objectionService)      
@@ -53,7 +54,7 @@ export class ObjectionsComponent implements OnInit {
       this.operationList = this.configurer.getAllowedOperation();
   }
 
-  convertToResultArray(){debugger;
+  convertToResultArray(){
     this.arrayResultData = [];
     for(let i=0;i<this.objectionData.length;i++){
       let objectionComments = this.objectionData[i].getOperation() ? this.objectionData[i].getOperation() : " "

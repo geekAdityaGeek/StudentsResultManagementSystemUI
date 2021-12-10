@@ -10,6 +10,7 @@ import { ResultService } from 'src/app/services/result.service';
 import { environment } from 'src/environments/environment';
 import { QueryVO } from 'src/vo/queryVO';
 import jwt_decode from "jwt-decode";
+import { Role } from 'src/enums/roleEnums';
 
 export enum queryFormFeilds{
   ROLL_NUMBER = "rollNumber",
@@ -87,7 +88,7 @@ export class QueryFormComponent implements OnInit {
 
     let params = new HttpParams()
     .append("rollNumber", this.queryForm.get("rollNumber").value)
-    .append("subjectode", this.queryForm.get("subjectCode").value)
+    .append("subjectCode", this.queryForm.get("subjectCode").value.split(",")[0])
     .append("term", this.queryForm.get("term").value)
     .append("year", this.queryForm.get("year").value)
 
@@ -95,13 +96,13 @@ export class QueryFormComponent implements OnInit {
 
     let query = new QueryVO(
       this.queryForm.get("rollNumber").value,
-      this.queryForm.get("subjectCode").value,
+      this.queryForm.get("subjectCode").value.split(",")[0],
       null,
       this.queryForm.get("term").value,
       this.queryForm.get("year").value
     );
 
-      debugger
+      
       this.resultService.getNextPage(-1, environment.apiConfig.items_per_page, query).subscribe(
         (data) => {
           this.commonService.loadComponent("/results", {'query':query, 'marks':data})
@@ -117,14 +118,14 @@ export class QueryFormComponent implements OnInit {
   }
 
 
-  isDisabled(){debugger
-    let disabled = this.decoded['role'] === 'student';
+  isDisabled(){
+    let disabled = this.decoded['role'] === Role.STUDENT;
     if (disabled){
       this.fixRollNumber()
     }
     return disabled;    
   }
 
-
+  
 
 }

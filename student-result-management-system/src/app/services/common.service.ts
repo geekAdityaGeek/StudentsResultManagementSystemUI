@@ -11,6 +11,7 @@ import { ObjectionVO } from 'src/vo/objectionVO';
 import jwt_decode from "jwt-decode";
 import { Actions } from 'src/enums/actionEnums';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { Urls } from 'src/enums/UrlMap';
 
 @Injectable({
   providedIn: 'root'
@@ -24,13 +25,13 @@ export class CommonService {
 
   fetchTerms(): Observable<any> {
     return this.http.get(
-      environment.apiConfig.base_url + "moderator/getUniqueTerms"
+      Urls.FETCH_TERMS
     );
   }
 
   fetchSubjectCodes(): Observable<any> {
     return this.http.get(
-      environment.apiConfig.base_url + "moderator/getListSubjCodeName"
+      Urls.FETCH_SUB_CODES
     );
   }
 
@@ -110,7 +111,7 @@ export class CommonService {
     return marks
   }
 
-  mapToObjectionData(data: any){debugger
+  mapToObjectionData(data: any){
     let objectionData = [];
     for(let idx=0; idx<data.length; idx++){
       let objection = this.mapToObjectionVO(data[idx])
@@ -162,7 +163,7 @@ export class CommonService {
   }
 
   getUserAllowedAction(role: string){
-    return this.http.get(environment.apiConfig.base_url+"actionsByRole/"+role)
+    return this.http.get(Urls.FETCH_ALLOWED_ACTIONS + role)
   }
 
 }

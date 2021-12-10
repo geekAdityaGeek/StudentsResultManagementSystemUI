@@ -3,7 +3,9 @@
         <h5 class="card-title">RESULTS</h5>
         <hr />
         
-        <a class="btn btn-success" [href]="getDownloadLink()" target="_blank">Download</a>
+        <a class="btn btn-success" *ngIf="isDownloadEnabled()"
+        [href]="getDownloadLink()" 
+        target="_blank">Download</a>
         <div style="float: right;">
             <label style="margin-right: 3px;font-weight: bolder;">{{currPage+1}} / {{totalPage}}</label>
             <button class="btn btn-primary" (click)="previousPage()">Previous</button>
