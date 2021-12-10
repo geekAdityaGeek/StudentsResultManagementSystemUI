@@ -46,12 +46,12 @@ export class RegisterformComponent implements OnInit {
     this.toastrService.success("Registration Form loaded!");
     this.authenticationService.fetchRoles().subscribe(
       (data: any) => {
-        // console.log(data);
+        
         for (var i = 0; i < data.length; i++) this.Roles.push(data[i]);
         this.toastrService.success("Roles fetched successfully!");
       },
       (error: HttpErrorResponse) => {
-        // console.log(error);
+        
         this.toastrService.error("Role not fetched successfully!");
       }
     );
@@ -112,12 +112,12 @@ export class RegisterformComponent implements OnInit {
 
     this.authenticationService.registerUser(this.userDetails).subscribe(
       (data: any) => {
-        console.log(data);
+        
         this.toastrService.success("Registration Successful!");
         this.registerform.reset();
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        
         this.toastrService.error(
           error.error.message,
           "Registration Unsuccessful!"

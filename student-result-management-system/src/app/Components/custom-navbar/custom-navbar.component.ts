@@ -42,12 +42,12 @@ export class CustomNavbarComponent implements OnInit {
     return this.cookieService.check("jwt")
   }
 
-  logout(){debugger
+  logout(){
     this.authenticationService.logout()
     this.commonService.loadComponent('/login', null)
   }
 
-  isAllowed(index:number){debugger
+  isAllowed(index:number){
     let allowed:boolean = false;
     let roleAction = this.commonService.getActionList() 
     for(let idx=0;idx<roleAction.length;idx++){

@@ -80,10 +80,10 @@ export class ResultsComponent implements OnInit {
 
   convertToResultArray() {
     this.arrayResultData = [];
-    console.log(this.resultData);
+    
     for (let i = 0; i < this.resultData.length; i++) {
       this.arrayResultData.push([]);
-      console.log(typeof this.resultData[i]);
+      
       this.arrayResultData[i].push(this.resultData[i].getRollNo());
       this.arrayResultData[i].push(
         this.resultData[i].getSubjectCode() +
@@ -152,7 +152,7 @@ export class ResultsComponent implements OnInit {
           
         },
         (error) => {
-          debugger;
+
           this.toastrService.warning("This is the first page!!");
         }
       );
@@ -179,7 +179,7 @@ export class ResultsComponent implements OnInit {
           this.totalPage = data["totalPage"];
         },
         (error) => {
-          debugger;
+          
           this.toastrService.warning("No More Pages Present!!");
         }
       );

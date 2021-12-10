@@ -149,7 +149,7 @@ export class UploadComponent implements OnInit {
   onBulkSubmit() {
     this.uploadService.bulkUpload(this.file).subscribe(
       (data) => {
-        console.log(data);
+        
         this.toastrService.success(data["message"], "Success");
       },
       (error: HttpErrorResponse) => {

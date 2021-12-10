@@ -43,7 +43,7 @@ export class ConfirmationComponent implements OnInit {
     this.resultData = passedData['data']
     this.savingUrl = passedData['savingUrl']
     
-    console.log(this.resultData);
+    
 
     this.convertToResultArray()
   }
@@ -60,13 +60,13 @@ export class ConfirmationComponent implements OnInit {
       this.arrayResultData[i].push(this.resultData[i]['marksObtained'])
       this.arrayResultData[i].push(this.resultData[i]['totalMarks'])
       this.arrayResultData[i].push(this.resultData[i]['grade']) 
-      debugger
+      
       if(this.resultData[i]['comments'])
         this.arrayResultData[i].push(this.resultData[i]['comments'])
       this.arrayResultData[i].push(this.resultData[i]['operation'])   
       this.arrayResultData[i].push(this.resultData[i]['operation'])        
     }
-    console.log(this.arrayResultData)
+    
   }
 
   ngOnInit() {
