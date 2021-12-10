@@ -39,7 +39,7 @@ export class TableComponent implements OnInit, OnChanges {
     if(changes['data'] && changes['data']['currentValue']){
       let changedData = changes['data']['currentValue'];
       this.rowStatus = []
-      debugger;
+      
       for(let idx=0; idx<this.data.length; idx++){
         let operation: string = this.data[idx][this.data[idx].length-1]
         this.rowStatus.push(RowOperation[operation])

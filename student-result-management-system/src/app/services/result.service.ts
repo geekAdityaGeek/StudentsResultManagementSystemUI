@@ -1,6 +1,7 @@
 import { query } from '@angular/animations';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Urls } from 'src/enums/UrlMap';
 import { environment } from 'src/environments/environment';
 import { QueryVO } from 'src/vo/queryVO';
 
@@ -11,7 +12,7 @@ export class ResultService {
 
   constructor(private http: HttpClient) { }
 
-  getNextPage(currPage: number, itemPerPage: number, queryVO: QueryVO){debugger
+  getNextPage(currPage: number, itemPerPage: number, queryVO: QueryVO){
     let param = new HttpParams()
     .append("page", (currPage+1).toString())
     .append("items", itemPerPage.toString())
@@ -20,7 +21,7 @@ export class ResultService {
     .append("term", queryVO.getTerm().toString())
     .append("year", queryVO.getYear().toString())
 
-    return this.http.get(environment.apiConfig.base_url+"getMarks/pagination", {params: param})
+    return this.http.get(Urls.MARKS_WITH_PAGINATION, {params: param})
   }
 
   getPreviousPage(currPage: number, itemPerPage: number, queryVO: QueryVO){
@@ -32,6 +33,6 @@ export class ResultService {
     .append("term", queryVO.getTerm().toString())
     .append("year", queryVO.getYear().toString())
 
-    return this.http.get(environment.apiConfig.base_url+"getMarks/pagination", {params: param})
+    return this.http.get(Urls.MARKS_WITH_PAGINATION, {params: param})
   }
 }

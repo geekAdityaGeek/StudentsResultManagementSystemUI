@@ -53,7 +53,7 @@ export class ObjectionsComponent implements OnInit {
       this.operationList = this.configurer.getAllowedOperation();
   }
 
-  convertToResultArray(){debugger;
+  convertToResultArray(){
     this.arrayResultData = [];
     for(let i=0;i<this.objectionData.length;i++){
       let objectionComments = this.objectionData[i].getOperation() ? this.objectionData[i].getOperation() : " "

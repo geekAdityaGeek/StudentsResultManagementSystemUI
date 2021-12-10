@@ -5,6 +5,7 @@ import { environment } from "src/environments/environment";
 import { Upload } from "../upload/upload.model";
 import { CookieService } from "ngx-cookie-service";
 import jwt_decode from "jwt-decode";
+import { Urls } from "src/enums/UrlMap";
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +23,7 @@ export class UploadService {
       decoded = jwt_decode(this.cookieService.get("jwt"));
     }
     return this.http.post(
-      environment.apiConfig.base_url + "moderator/singleUpload?extId=" + decoded.sub,
+      Urls.MOD_SINGLE_UPLOAD+"?extId=" + decoded.sub,
       uploadObj,
       {
         params: new HttpParams()
@@ -39,7 +40,7 @@ export class UploadService {
     let body = new FormData();
     body.append("file", file);
     return this.http.post(
-      environment.apiConfig.base_url + "moderator/bulkUpload",
+      Urls.MOD_BULK_UPLOAD,
       body,
       {
         params: new HttpParams()
@@ -50,14 +51,14 @@ export class UploadService {
 
   bulkUpdate(bulkUpdateFile: File) {
     var decoded: { sub: string; role: string; exp: number; iat: number } = null;
-    console.log(this.cookieService.check("jwt"));
+    
     if (this.cookieService.check("jwt")) {
       decoded = jwt_decode(this.cookieService.get("jwt"));
     }
     let body = new FormData();
     body.append("file", bulkUpdateFile);
     return this.http.post(
-      environment.apiConfig.base_url + "moderator/bulkUpdate",
+      Urls.MOD_BULK_UPDATE,
       body,
       {
         params: new HttpParams()

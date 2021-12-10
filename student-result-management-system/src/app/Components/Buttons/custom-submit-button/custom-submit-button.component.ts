@@ -26,7 +26,7 @@ export class CustomSubmitButtonComponent implements OnInit {
   ngOnInit() {  }
 
   fetchData(){
-    debugger;
+    
     if(!this.requestData || !this.requestData['data'] || this.requestData['data'].length == 0 ){
       this.toastrService.warning("No operation selected by user")
       return

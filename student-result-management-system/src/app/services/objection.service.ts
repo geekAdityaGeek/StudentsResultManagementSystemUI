@@ -19,7 +19,7 @@ export class ObjectionService {
   }
 
   
-  getObjectionListToOperate(extId: string, currPage: Number, itemsPerPage: Number){debugger
+  getObjectionListToOperate(extId: string, currPage: Number, itemsPerPage: Number){
     let parameters = new HttpParams()
     .append("extId", extId)
     .append("page", currPage.toString())

@@ -27,11 +27,11 @@ export class HttpCalIInterceptor implements HttpInterceptor {
     var decoded: { sub: string; role: string; exp: number; iat: number } = null;
     if (this.cookieService.check("jwt")) {
       decoded = jwt_decode(this.cookieService.get("jwt"));
-      console.log(decoded);
+      
     }
-    console.log(new Date().getTime());
+    
     var time = new Date().getTime();
-    // console.log(decoded.exp);
+    
     if (decoded != null && decoded.exp * 1000 < time)
       this.authenticationService.logout();
     if (
