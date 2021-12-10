@@ -12,6 +12,7 @@ import { CommonService } from "../services/common.service";
 import { ResultService } from "../services/result.service";
 import { CookieService } from "ngx-cookie-service";
 import jwt_decode from "jwt-decode";
+import { Role } from "src/enums/roleEnums";
 
 @Component({
   selector: "results",
@@ -59,7 +60,7 @@ export class ResultsComponent implements OnInit {
     if (this.cookieService.check("jwt")) {
       this.decoded = jwt_decode(this.cookieService.get("jwt"));
     }
-    if (this.decoded.role === "student") {
+    if (this.decoded.role === Role.STUDENT) {
       this.configurer = new StudentResultConf(this.commonService);
     } else {
       this.configurer = new ModeratorResultConf(this.commonService);

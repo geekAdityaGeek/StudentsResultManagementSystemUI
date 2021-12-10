@@ -10,6 +10,7 @@ import { ResultService } from 'src/app/services/result.service';
 import { environment } from 'src/environments/environment';
 import { QueryVO } from 'src/vo/queryVO';
 import jwt_decode from "jwt-decode";
+import { Role } from 'src/enums/roleEnums';
 
 export enum queryFormFeilds{
   ROLL_NUMBER = "rollNumber",
@@ -118,7 +119,7 @@ export class QueryFormComponent implements OnInit {
 
 
   isDisabled(){
-    let disabled = this.decoded['role'] === 'student';
+    let disabled = this.decoded['role'] === Role.STUDENT;
     if (disabled){
       this.fixRollNumber()
     }
