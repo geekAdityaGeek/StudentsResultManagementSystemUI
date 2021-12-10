@@ -13,6 +13,7 @@ import { ResultService } from "../services/result.service";
 import { CookieService } from "ngx-cookie-service";
 import jwt_decode from "jwt-decode";
 import { Role } from "src/enums/roleEnums";
+import { Actions } from "src/enums/actionEnums";
 
 @Component({
   selector: "results",
@@ -184,5 +185,9 @@ export class ResultsComponent implements OnInit {
           this.toastrService.warning("No More Pages Present!!");
         }
       );
+  }
+
+  isDownloadEnabled(){
+    return this.commonService.getActionList().includes(Actions.DOWNLOAD_RESULT) 
   }
 }
