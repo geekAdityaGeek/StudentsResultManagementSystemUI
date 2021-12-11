@@ -25,7 +25,10 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.toastrService.success("Login Form loaded!");
+    if(this.commonService.getDecodedToken()){
+      this.commonService.loadComponent("home", null);
+    }
+    //this.toastrService.success("Login Form loaded!");
     this.loginForm = new FormGroup({
       id: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),

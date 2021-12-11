@@ -55,7 +55,7 @@ export class ObjectionsComponent implements OnInit {
   }
 
   convertToResultArray(){
-    this.arrayResultData = [];debugger
+    this.arrayResultData = [];
     for(let i=0;i<this.objectionData.length;i++){
       let objectionComments = this.objectionData[i].getComments() ? this.objectionData[i].getComments() : " "
       this.arrayResultData.push([]);
@@ -102,7 +102,7 @@ export class ObjectionsComponent implements OnInit {
   nextPage(){
 
     this.configurer.getObjectionData(this.decoded['sub'], this.currPage+1, environment.apiConfig.items_per_page).subscribe(
-      data => {debugger
+      data => {
         this.totalPage = data["totalPage"];
         if(this.totalPage == 0){
           this.currPage = -1;
@@ -121,7 +121,7 @@ export class ObjectionsComponent implements OnInit {
 
   previousPage(){
     this.configurer.getObjectionData(this.decoded['sub'], this.currPage-1, environment.apiConfig.items_per_page).subscribe(
-      data => {debugger
+      data => {
         this.totalPage = data["totalPage"];
         if(this.totalPage == 0){
           this.currPage = -1;

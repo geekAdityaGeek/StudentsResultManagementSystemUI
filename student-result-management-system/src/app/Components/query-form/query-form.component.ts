@@ -84,7 +84,7 @@ export class QueryFormComponent implements OnInit {
     return queryData;
   }
 
-  submitQuery(){debugger
+  submitQuery(){
 
     let params = new HttpParams()
     .append("rollNumber", this.queryForm.get("rollNumber").value)
