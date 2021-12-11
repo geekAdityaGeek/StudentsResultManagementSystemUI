@@ -44,9 +44,6 @@ export class ConfirmationComponent implements OnInit {
     this.resultData = passedData['data']
     this.savingUrl = passedData['savingUrl']
     this.httpParams = passedData['params']
-        
-    debugger
-
     this.convertToResultArray()
   }
 
@@ -78,7 +75,7 @@ export class ConfirmationComponent implements OnInit {
     this.commonService.loadComponent('home', null)
   }
 
-  saveData(){debugger
+  saveData(){
     let httpWorker = null;
     if(this.httpParams){
       httpWorker = this.http.post(environment.apiConfig.base_url+this.savingUrl, this.resultData, {params: this.httpParams})
