@@ -23,7 +23,7 @@ export class UploadService {
       decoded = jwt_decode(this.cookieService.get("jwt"));
     }
     return this.http.post(
-      Urls.MOD_SINGLE_UPLOAD+"?extId=" + decoded.sub,
+      Urls.MOD_SINGLE_UPLOAD,
       uploadObj,
       {
         params: new HttpParams()
