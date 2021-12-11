@@ -12,6 +12,7 @@
         [colWidth]="colWidth"
         [disabledInputs] = "disabledInputs"
         [operationAllowed]="operationList"
+        [isNotFullyEditable]="isNotEditable()"
         (changedDataEvent)="operatedDataProcessing($event)"></custom-table>
 
         <custom-submit-button [btnLabel]="submitBtnLabel" 

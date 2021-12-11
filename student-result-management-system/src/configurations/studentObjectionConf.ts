@@ -25,6 +25,10 @@ export class StudentObjectionConf implements ObjectionRoleConf {
     getOperationUrl(){ }  
 
     public getViewObjectionUrl(){
-        return "objection/studentObjections"
+        return "objection/all"
+    }
+
+    public isEditable():boolean{
+        return false;
     }
 }

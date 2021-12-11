@@ -7,4 +7,5 @@ export interface ObjectionRoleConf extends UIConf, RoleConf{
     getRequestDataForOperation();
     getObjectionData(extId: string, currPage: Number, itemsPerPage: Number);
     getViewObjectionUrl();
+    isEditable():boolean;
 }

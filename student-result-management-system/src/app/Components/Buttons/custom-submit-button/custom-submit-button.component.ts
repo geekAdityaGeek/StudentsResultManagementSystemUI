@@ -25,7 +25,7 @@ export class CustomSubmitButtonComponent implements OnInit {
 
   ngOnInit() {  }
 
-  fetchData(){
+  fetchData(){debugger
     
     if(!this.requestData || !this.requestData['data'] || this.requestData['data'].length == 0 ){
       this.toastrService.warning("No operation selected by user")
@@ -47,7 +47,7 @@ export class CustomSubmitButtonComponent implements OnInit {
     }
   }
 
-  loadComponent(){
+  loadComponent(){debugger
     this.router.navigateByUrl(this.componentUrl,  { state: this.responseData })
   }
 

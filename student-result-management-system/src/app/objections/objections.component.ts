@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
@@ -55,9 +55,9 @@ export class ObjectionsComponent implements OnInit {
   }
 
   convertToResultArray(){
-    this.arrayResultData = [];
+    this.arrayResultData = [];debugger
     for(let i=0;i<this.objectionData.length;i++){
-      let objectionComments = this.objectionData[i].getOperation() ? this.objectionData[i].getOperation() : " "
+      let objectionComments = this.objectionData[i].getComments() ? this.objectionData[i].getComments() : " "
       this.arrayResultData.push([]);
       this.arrayResultData[i].push(this.objectionData[i].getRollNo())
       this.arrayResultData[i].push(this.objectionData[i].getSubjectCode()
@@ -69,6 +69,7 @@ export class ObjectionsComponent implements OnInit {
       this.arrayResultData[i].push(this.objectionData[i].getGrade())    
       this.arrayResultData[i].push(objectionComments)  
       this.arrayResultData[i].push(this.objectionData[i].getOperation())
+      
     }
   }
 
@@ -81,25 +82,33 @@ export class ObjectionsComponent implements OnInit {
     this.configurer.processOperatedData(operatedData)  
   }
 
+  getParams(){
+    let parameters = new HttpParams()
+    .append("extId", this.decoded['sub'])
+    return parameters;
+  }
+
   dataExtractor = () => {
     let finalData = {};
     finalData['columnHeading']=["ROLL NUMBER", "SUBJECT", "YEAR", "TERM", "MARKS", "TOTAL MARKS", "GRADE", "COMMENTS", "OPERATION"]
     finalData['colWidth'] = ["15%","15%","10%","10%","10%", "10%", "10%", "10%"]
     finalData['savingUrl'] = this.configurer.getOperationUrl()
     finalData['data'] = this.configurer.getRequestDataForOperation();
+    finalData['params'] =  new HttpParams()
+          .append("extId", this.decoded['sub'])
     return finalData
   }
 
   nextPage(){
 
     this.configurer.getObjectionData(this.decoded['sub'], this.currPage+1, environment.apiConfig.items_per_page).subscribe(
-      data => {
+      data => {debugger
         this.totalPage = data["totalPage"];
         if(this.totalPage == 0){
           this.currPage = -1;
           return
         }
-        this.objectionData = this.commonService.mapToMarksData(data["objectionVOList"]);
+        this.objectionData = this.commonService.mapToObjectionData(data["objectionVOList"]);
         this.convertToResultArray()
         this.currPage += 1;
         
@@ -112,21 +121,23 @@ export class ObjectionsComponent implements OnInit {
 
   previousPage(){
     this.configurer.getObjectionData(this.decoded['sub'], this.currPage-1, environment.apiConfig.items_per_page).subscribe(
-      data => {
+      data => {debugger
         this.totalPage = data["totalPage"];
         if(this.totalPage == 0){
           this.currPage = -1;
           return
         }
-        this.objectionData = this.commonService.mapToMarksData(data["objectionVOList"]);
+        this.objectionData = this.commonService.mapToObjectionData(data["objectionVOList"]);
         this.convertToResultArray()
         this.currPage -= 1;        
       },
       error => {
         this.toastrService.warning("This is the first page!!");
       },
-    )
-      
+    )      
   }
 
+  isNotEditable(){
+    return !this.configurer.isEditable();
+  }
 }

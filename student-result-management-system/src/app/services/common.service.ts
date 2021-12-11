@@ -123,7 +123,7 @@ export class CommonService {
   mapToObjectionVO(data){
     return new ObjectionVO(
       data.rollNo, data.subjectCode, data.subjectName, data.marksObtained,
-      data.totalMarks, data.grade, data.year, data.term, data.comments, data.status
+      data.totalMarks, data.grade, data.year, data.term, data.comments, data.operation
     );
   }
 

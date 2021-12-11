@@ -14,6 +14,7 @@ import { CookieService } from "ngx-cookie-service";
 import jwt_decode from "jwt-decode";
 import { Role } from "src/enums/roleEnums";
 import { Actions } from "src/enums/actionEnums";
+import { HttpParams } from "@angular/common/http";
 
 @Component({
   selector: "results",
@@ -126,6 +127,8 @@ export class ResultsComponent implements OnInit {
     finalData["colWidth"] = ["15%", "30%", "10%", "10%", "10%", "10%", "10%"];
     finalData["savingUrl"] = this.configurer.getOperationUrl();
     finalData["data"] = this.configurer.getRequestDataForOperation();
+    finalData['params'] =  new HttpParams()
+          .append("extId", this.decoded['sub'])
     return finalData;
   };
 

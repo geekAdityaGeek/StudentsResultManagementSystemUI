@@ -1,4 +1,4 @@
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -22,6 +22,7 @@ export class ConfirmationComponent implements OnInit {
   submitBtnLabel:string = "Submit"
   userConf:string = "user-conf"
   savingUrl:string
+  httpParams: HttpParams = null;
 
   opSuccess:boolean = null
   failureMessage:string = "failed" 
@@ -42,8 +43,9 @@ export class ConfirmationComponent implements OnInit {
     this.colWidth = passedData['colWidth']
     this.resultData = passedData['data']
     this.savingUrl = passedData['savingUrl']
-    
-    
+    this.httpParams = passedData['params']
+        
+    debugger
 
     this.convertToResultArray()
   }
@@ -76,8 +78,14 @@ export class ConfirmationComponent implements OnInit {
     this.commonService.loadComponent('home', null)
   }
 
-  saveData(){
-    this.http.post(environment.apiConfig.base_url+this.savingUrl, this.resultData).subscribe(
+  saveData(){debugger
+    let httpWorker = null;
+    if(this.httpParams){
+      httpWorker = this.http.post(environment.apiConfig.base_url+this.savingUrl, this.resultData, {params: this.httpParams})
+    }else{
+      httpWorker = this.http.post(environment.apiConfig.base_url+this.savingUrl, this.resultData)
+    }
+    httpWorker.subscribe(
       (data) => {
         this.opSuccess = true
         this.toastrService.success("Operation Successfull", "Success");

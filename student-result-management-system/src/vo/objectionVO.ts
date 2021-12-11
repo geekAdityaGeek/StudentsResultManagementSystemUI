@@ -21,5 +21,9 @@ export class ObjectionVO extends MarksVO{
     getComments(){
         return this.comments;
     }
+
+    getOperation(){
+        return this.operation;
+    }
     
 }

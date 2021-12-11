@@ -49,7 +49,11 @@ export class ModeratorObjectionConf implements ObjectionRoleConf{
     }
 
     public getViewObjectionUrl(){
-        return "objection/modObjections"
+        return "objection/all"
+    }
+
+    public isEditable():boolean{
+        return true;
     }
 
 }
