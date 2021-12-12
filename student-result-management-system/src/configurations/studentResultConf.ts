@@ -36,7 +36,7 @@ export class StudentResultConf implements ResultRoleConf{
         .append("term", queryVO["term"].toString())
         .append("year", queryVO["year"].toString())
         
-        return Urls.GET_RESULT_PDF+params.toString()
+        return Urls.GET_RESULT_PDF+"?"+params.toString()
     }
 
     public getOperationUrl(){
