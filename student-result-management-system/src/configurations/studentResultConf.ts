@@ -1,6 +1,7 @@
 import { HttpParams } from "@angular/common/http";
 import { CommonService } from "src/app/services/common.service";
 import { RowOperation } from "src/enums/rowOperation";
+import { Urls } from "src/enums/UrlMap";
 import { environment } from "src/environments/environment";
 import { ResultRoleConf } from "./ResultRoleConf";
 
@@ -35,11 +36,11 @@ export class StudentResultConf implements ResultRoleConf{
         .append("term", queryVO["term"].toString())
         .append("year", queryVO["year"].toString())
         
-        return environment.apiConfig.base_url + "download/result/pdf?"+params.toString()
+        return Urls.GET_RESULT_PDF+params.toString()
     }
 
     public getOperationUrl(){
-        return "objection/raiseObjection";
+        return Urls.RAISE_OBJECTION;
     }
     
     getRequestDataForOperation(){

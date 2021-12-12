@@ -18,7 +18,7 @@ export class AuthenticationService {
   ) {}
 
   fetchRoles() {
-    return this.http.get(environment.apiConfig.base_url + "allRoles");
+    return this.http.get(Urls.FETCH_ALL_ROLES);
   }
   registerUser(userDetails: UserDetailsVO): Observable<any> {
     return this.http.post(

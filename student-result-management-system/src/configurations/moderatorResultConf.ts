@@ -1,6 +1,7 @@
 import { ToastrService } from "ngx-toastr";
 import { CommonService } from "src/app/services/common.service";
 import { RowOperation } from "src/enums/rowOperation";
+import { Urls } from "src/enums/UrlMap";
 import { ResultRoleConf } from "./ResultRoleConf";
 
 export class ModeratorResultConf implements ResultRoleConf{
@@ -36,7 +37,7 @@ export class ModeratorResultConf implements ResultRoleConf{
     }
     
     public getOperationUrl(){
-        return "moderator/updateMarks";
+        return Urls.UPDATE_MARKS;
     }
 
     public getRequestDataForOperation(){
