@@ -78,9 +78,9 @@ export class ConfirmationComponent implements OnInit {
   saveData(){
     let httpWorker = null;
     if(this.httpParams){
-      httpWorker = this.http.post(environment.apiConfig.base_url+this.savingUrl, this.resultData, {params: this.httpParams})
+      httpWorker = this.http.post(this.savingUrl, this.resultData, {params: this.httpParams})
     }else{
-      httpWorker = this.http.post(environment.apiConfig.base_url+this.savingUrl, this.resultData)
+      httpWorker = this.http.post(this.savingUrl, this.resultData)
     }
     httpWorker.subscribe(
       (data) => {

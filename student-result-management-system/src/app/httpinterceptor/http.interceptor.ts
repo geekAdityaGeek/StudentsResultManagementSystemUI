@@ -12,6 +12,7 @@ import { environment } from "src/environments/environment";
 import { CookieService } from "ngx-cookie-service";
 import { AuthenticationService } from "../services/authentication.service";
 import jwt_decode from "jwt-decode";
+import { Urls } from "src/enums/UrlMap";
 @Injectable()
 export class HttpCalIInterceptor implements HttpInterceptor {
   constructor(
@@ -37,7 +38,7 @@ export class HttpCalIInterceptor implements HttpInterceptor {
     if (
       request.url != environment.apiConfig.base_url + "register" &&
       request.url != environment.apiConfig.base_url + "authenticate" &&
-      request.url != environment.apiConfig.base_url + "allRoles"
+      request.url != Urls.FETCH_ALL_ROLES 
     ) {
       let modifiedurl = request.clone({
         headers: new HttpHeaders().append(

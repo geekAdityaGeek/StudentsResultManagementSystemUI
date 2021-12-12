@@ -1,6 +1,7 @@
 import { CommonService } from "src/app/services/common.service";
 import { ObjectionService } from "src/app/services/objection.service";
 import { RowOperation } from "src/enums/rowOperation";
+import { Urls } from "src/enums/UrlMap";
 import { ObjectionVO } from "src/vo/objectionVO";
 import { ObjectionRoleConf } from "./ObjectionRoleConf";
 
@@ -45,11 +46,11 @@ export class ModeratorObjectionConf implements ObjectionRoleConf{
     }
 
     public getOperationUrl(){
-        return "objection/resolveObjection";
+        return Urls.RESOLVE_OBJECTION;
     }
 
     public getViewObjectionUrl(){
-        return "objection/all"
+        return Urls.GET_ALL_OBJECTIONS;
     }
 
     public isEditable():boolean{

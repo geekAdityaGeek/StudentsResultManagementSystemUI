@@ -41,6 +41,6 @@ export class ObjectionService {
     .append("extId", extId)
     .append("page", currPage.toString())
     .append("items", itemsPerPage.toString())
-    return this.http.get(environment.apiConfig.base_url+objectionFetchUrl, {params: parameters})
+    return this.http.get(objectionFetchUrl, {params: parameters})
   }
 }
