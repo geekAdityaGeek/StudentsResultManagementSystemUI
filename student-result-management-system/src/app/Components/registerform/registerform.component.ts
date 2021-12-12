@@ -59,7 +59,7 @@ export class RegisterformComponent implements OnInit {
       {
         firstname: new FormControl("", Validators.required),
         lastname: new FormControl("", Validators.required),
-        gender: new FormControl("", Validators.required),
+        //gender: new FormControl("", Validators.required),
         contactno: new FormControl("", [
           Validators.required,
           Validators.pattern(new RegExp("^[0-9]{10}$")),
@@ -100,7 +100,8 @@ export class RegisterformComponent implements OnInit {
       this.registerform.get("lastname").value;
     this.userDetails = new UserDetailsVO(
       name,
-      this.registerform.get("gender").value,
+      //this.registerform.get("gender").value,
+      null,
       this.registerform.get("contactno").value,
       this.registerform.get("role").value,
       this.registerform.get("id").value,
